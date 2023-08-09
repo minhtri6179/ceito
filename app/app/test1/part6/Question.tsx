@@ -4,9 +4,9 @@ import QuestionsPart2 from "../../components/QuestionsPart2"
 
 const ImageGallery: React.FC = () => {
 
-  const questions = Array.from({ length: 25 }, (_, index) => ({
+  const questions = Array.from({ length: 16 }, (_, index) => ({
     question: `Listening`,
-    options: ["A. ", "B. ", "C. "],
+    options: ["A. ", "B. ", "C. ", "D. "],
   }));
   
 
@@ -14,10 +14,10 @@ const ImageGallery: React.FC = () => {
     <div>
       {questions.map((questionData, index) => (
         <QuestionsPart2
-          key={index+6}
+          key={index+130}
           question={questionData.question}
           options={questionData.options}
-          index={index+6}
+          index={index+130}
         />
       ))}
     </div>

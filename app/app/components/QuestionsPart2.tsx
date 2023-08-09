@@ -11,14 +11,12 @@ import {
 interface QuestionProps {
   question: string;
   options: string[];
-  imageSrc: string;
   index: number;
 }
 
 const Question: React.FC<QuestionProps> = ({
   question,
   options,
-  imageSrc,
   index,
 }) => (
   <div>
@@ -40,14 +38,6 @@ const Question: React.FC<QuestionProps> = ({
         ))}
       </RadioGroup>
     </FormControl>
-
-    <img
-      src={imageSrc}
-      alt={`Question ${index + 1}`}
-      style={{ margin: "5px", marginBottom: "20px" }}
-      width={500}
-      height={500}
-    />
   </div>
 );
 

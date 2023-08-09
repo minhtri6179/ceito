@@ -1,21 +1,14 @@
-import styles from './page.module.css'
+import styles from "./page.module.css";
 
 export default function Home() {
   return (
-    const names = ['Ada Lovelace', 'Grace Hopper', 'Margaret Hamilton'];
-
-  return (
-    <div>
-      <Header title="Develop. Preview. Ship. 🚀" />
-      <ul>
-        {names.map((name) => (
-          <li key={name}>{name}</li>
-        ))}
-      </ul>
-
-      <button>Like</button>
-    </div>
+    <main className={styles.main}>
+      <div className={styles.description}>
+        <p>
+          Get started by editing&nbsp;
+          <code className={styles.code}>app/page.tsx</code>
+        </p>
+      </div>
+    </main>
   );
-
-  )
 }

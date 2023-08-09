@@ -25,20 +25,19 @@ const ImageGallery = () => {
     // Add more images as needed...
   ];
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const handleImageChange = (index) => {
+  const handleImageChange = (index: number) => {
     setSelectedImageIndex(index);
   };
 
   return (
     <div>
-      {imageFiles.map((imageFile, index) => (
+      {imageFiles.map((imageFile, index: number) => (
         <div key={index}>
           <FormControl>
             <FormLabel id="qus-ans-ansersheet">Question {index + 1}</FormLabel>
             <RadioGroup
               aria-labelledby="demo-radio-buttons-group-label"
-              name="ansersheet"
-            >
+              name="ansersheet">
               <FormControlLabel value="A" control={<Radio />} label="A" />
               <FormControlLabel value="B" control={<Radio />} label="B" />
               <FormControlLabel value="C" control={<Radio />} label="C" />

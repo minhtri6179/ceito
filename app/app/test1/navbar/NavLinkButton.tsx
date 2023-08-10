@@ -15,7 +15,7 @@ const NavLinkButton: React.FC<NavLinkButtonProps> = ({ href, label }) => {
 
   return (
     
-    <Link href={href}>
+    <Link href={href} >
       <Button variant={pathname === href ? "contained" : "outlined"}>
         {label}
       </Button>

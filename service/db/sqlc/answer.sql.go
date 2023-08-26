@@ -10,20 +10,20 @@ import (
 	"database/sql"
 )
 
-const createAnswer = `-- name: createAnswer :one
+const createAnswer = `-- name: CreateAnswer :one
 INSERT INTO answer (question_id, answer_text, is_correct)
 VALUES ($1, $2, $3)
 RETURNING answer_id, question_id, answer_text, is_correct, created_at, update_at
 `
 
-type createAnswerParams struct {
-	QuestionID sql.NullInt32
-	AnswerText sql.NullString
-	IsCorrect  sql.NullBool
+type CreateAnswerParams struct {
+	QuestionID sql.NullInt32  `json:"question_id"`
+	AnswerText sql.NullString `json:"answer_text"`
+	IsCorrect  sql.NullBool   `json:"is_correct"`
 }
 
-func (q *Queries) createAnswer(ctx context.Context, arg createAnswerParams) (Answer, error) {
-	row := q.db.QueryRowContext(ctx, createAnswer, arg.QuestionID, arg.AnswerText, arg.IsCorrect)
+func (q *Queries) CreateAnswer(ctx context.Context, arg CreateAnswerParams) (Answer, error) {
+	row := q.queryRow(ctx, q.createAnswerStmt, createAnswer, arg.QuestionID, arg.AnswerText, arg.IsCorrect)
 	var i Answer
 	err := row.Scan(
 		&i.AnswerID,
@@ -34,4 +34,101 @@ func (q *Queries) createAnswer(ctx context.Context, arg createAnswerParams) (Ans
 		&i.UpdateAt,
 	)
 	return i, err
+}
+
+const deleteAnswer = `-- name: DeleteAnswer :exec
+DELETE FROM answer
+WHERE answer_id = $1
+`
+
+func (q *Queries) DeleteAnswer(ctx context.Context, answerID int32) error {
+	_, err := q.exec(ctx, q.deleteAnswerStmt, deleteAnswer, answerID)
+	return err
+}
+
+const getAnswer = `-- name: GetAnswer :one
+SELECT answer_id, question_id, answer_text, is_correct, created_at, update_at
+FROM answer
+WHERE answer_id = $1
+`
+
+func (q *Queries) GetAnswer(ctx context.Context, answerID int32) (Answer, error) {
+	row := q.queryRow(ctx, q.getAnswerStmt, getAnswer, answerID)
+	var i Answer
+	err := row.Scan(
+		&i.AnswerID,
+		&i.QuestionID,
+		&i.AnswerText,
+		&i.IsCorrect,
+		&i.CreatedAt,
+		&i.UpdateAt,
+	)
+	return i, err
+}
+
+const listAnswers = `-- name: ListAnswers :many
+SELECT answer_id, question_id, answer_text, is_correct, created_at, update_at
+FROM answer
+ORDER BY answer_id
+LIMIT $1 OFFSET $2
+`
+
+type ListAnswersParams struct {
+	Limit  int32 `json:"limit"`
+	Offset int32 `json:"offset"`
+}
+
+func (q *Queries) ListAnswers(ctx context.Context, arg ListAnswersParams) ([]Answer, error) {
+	rows, err := q.query(ctx, q.listAnswersStmt, listAnswers, arg.Limit, arg.Offset)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Answer
+	for rows.Next() {
+		var i Answer
+		if err := rows.Scan(
+			&i.AnswerID,
+			&i.QuestionID,
+			&i.AnswerText,
+			&i.IsCorrect,
+			&i.CreatedAt,
+			&i.UpdateAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const updateAnswer = `-- name: UpdateAnswer :exec
+UPDATE answer
+SET question_id = $1,
+    answer_text = $2,
+    is_correct = $3
+WHERE answer_id = $4
+`
+
+type UpdateAnswerParams struct {
+	QuestionID sql.NullInt32  `json:"question_id"`
+	AnswerText sql.NullString `json:"answer_text"`
+	IsCorrect  sql.NullBool   `json:"is_correct"`
+	AnswerID   int32          `json:"answer_id"`
+}
+
+func (q *Queries) UpdateAnswer(ctx context.Context, arg UpdateAnswerParams) error {
+	_, err := q.exec(ctx, q.updateAnswerStmt, updateAnswer,
+		arg.QuestionID,
+		arg.AnswerText,
+		arg.IsCorrect,
+		arg.AnswerID,
+	)
+	return err
 }

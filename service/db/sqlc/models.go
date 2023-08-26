@@ -9,42 +9,42 @@ import (
 )
 
 type Answer struct {
-	AnswerID   int32
-	QuestionID sql.NullInt32
-	AnswerText sql.NullString
-	IsCorrect  sql.NullBool
-	CreatedAt  sql.NullTime
-	UpdateAt   sql.NullTime
+	AnswerID   int32          `json:"answer_id"`
+	QuestionID sql.NullInt32  `json:"question_id"`
+	AnswerText sql.NullString `json:"answer_text"`
+	IsCorrect  sql.NullBool   `json:"is_correct"`
+	CreatedAt  sql.NullTime   `json:"created_at"`
+	UpdateAt   sql.NullTime   `json:"update_at"`
 }
 
 type Question struct {
-	QuestionID   int32
-	QuestionText sql.NullString
-	AnswerID     sql.NullInt32
-	CreatedAt    sql.NullTime
-	UpdateAt     sql.NullTime
+	QuestionID   int32          `json:"question_id"`
+	QuestionText sql.NullString `json:"question_text"`
+	AnswerID     sql.NullInt32  `json:"answer_id"`
+	CreatedAt    sql.NullTime   `json:"created_at"`
+	UpdateAt     sql.NullTime   `json:"update_at"`
 }
 
 type Score struct {
-	ScoreID        int32
-	TestID         sql.NullInt32
-	ReadingScore   sql.NullInt32
-	ListeningScore sql.NullInt32
-	TotalScore     sql.NullInt32
+	ScoreID        int32         `json:"score_id"`
+	TestID         sql.NullInt32 `json:"test_id"`
+	ReadingScore   sql.NullInt32 `json:"reading_score"`
+	ListeningScore sql.NullInt32 `json:"listening_score"`
+	TotalScore     sql.NullInt32 `json:"total_score"`
 }
 
 type Test struct {
-	TestID    int32
-	UserID    sql.NullInt32
-	CreatedAt sql.NullTime
-	UpdateAt  sql.NullTime
+	TestID    int32         `json:"test_id"`
+	UserID    sql.NullInt32 `json:"user_id"`
+	CreatedAt sql.NullTime  `json:"created_at"`
+	UpdateAt  sql.NullTime  `json:"update_at"`
 }
 
 type User struct {
-	ID             int32
-	Username       sql.NullString
-	Email          sql.NullString
-	PasswordHashed sql.NullString
-	CreatedAt      sql.NullTime
-	UpdateAt       sql.NullTime
+	ID             int32          `json:"id"`
+	Username       sql.NullString `json:"username"`
+	Email          sql.NullString `json:"email"`
+	PasswordHashed sql.NullString `json:"password_hashed"`
+	CreatedAt      sql.NullTime   `json:"created_at"`
+	UpdateAt       sql.NullTime   `json:"update_at"`
 }

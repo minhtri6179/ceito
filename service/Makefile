@@ -10,10 +10,10 @@ dropdb:
 	docker exec -it postgres12 dropdb toeic
 
 migrateup:
-	migrate -path db/migration -database "${DB_URL}" -verbose up
+	migrate -path db/migrations -database "${DB_URL}" -verbose up
 
 migratedown:
-	migrate -path db/migration -database "${DB_URL}" -verbose down
+	migrate -path db/migrations -database "${DB_URL}" -verbose down
 
 sqlc:
 	sqlc generate

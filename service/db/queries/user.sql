@@ -15,7 +15,8 @@ LIMIT $1 OFFSET $2;
 UPDATE users
 SET username = $1,
     email = $2,
-    password_hashed = $3
+    full_name = $3,
+    password_hashed = $4
 WHERE id = $4;
 -- name: DeleteUser :exec
 DELETE FROM users

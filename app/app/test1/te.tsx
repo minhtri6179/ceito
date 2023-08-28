@@ -6,7 +6,7 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import ImageGallery from "../components/ImageGallery";
-import ListeningQuestion from "../components/ListeningQuestion";
+import ListeningQuestion from "../components/ListeningQuestion2";
 export default function LabTabs() {
   const [value, setValue] = React.useState('1');
 
@@ -19,13 +19,13 @@ export default function LabTabs() {
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <TabList onChange={handleChange} aria-label="lab API tabs example">
-            <Tab label="Item One" value="1" />
-            <Tab label="Item Two" value="2" />
-            <Tab label="Item Three" value="3" />
-            <Tab label="Item Three" value="4" />
-            <Tab label="Item Three" value="5" />
-            <Tab label="Item Three" value="6" />
-            <Tab label="Item Three" value="7" />
+            <Tab label="Part 1" value="1" />
+            <Tab label="Part 2" value="2" />
+            <Tab label="Part 3" value="3" />
+            <Tab label="Part 4" value="4" />
+            <Tab label="Part 5" value="5" />
+            <Tab label="Part 6" value="6" />
+            <Tab label="Part 7" value="7" />
           </TabList>
         </Box>
         <TabPanel value="1"><ImageGallery /></TabPanel>

@@ -23,7 +23,7 @@ type CreateAnswerParams struct {
 }
 
 func (q *Queries) CreateAnswer(ctx context.Context, arg CreateAnswerParams) (Answer, error) {
-	row := q.queryRow(ctx, q.createAnswerStmt, createAnswer, arg.QuestionID, arg.AnswerText, arg.IsCorrect)
+	row := q.db.QueryRowContext(ctx, createAnswer, arg.QuestionID, arg.AnswerText, arg.IsCorrect)
 	var i Answer
 	err := row.Scan(
 		&i.AnswerID,
@@ -42,7 +42,7 @@ WHERE answer_id = $1
 `
 
 func (q *Queries) DeleteAnswer(ctx context.Context, answerID int32) error {
-	_, err := q.exec(ctx, q.deleteAnswerStmt, deleteAnswer, answerID)
+	_, err := q.db.ExecContext(ctx, deleteAnswer, answerID)
 	return err
 }
 
@@ -53,7 +53,7 @@ WHERE answer_id = $1
 `
 
 func (q *Queries) GetAnswer(ctx context.Context, answerID int32) (Answer, error) {
-	row := q.queryRow(ctx, q.getAnswerStmt, getAnswer, answerID)
+	row := q.db.QueryRowContext(ctx, getAnswer, answerID)
 	var i Answer
 	err := row.Scan(
 		&i.AnswerID,
@@ -79,7 +79,7 @@ type ListAnswersParams struct {
 }
 
 func (q *Queries) ListAnswers(ctx context.Context, arg ListAnswersParams) ([]Answer, error) {
-	rows, err := q.query(ctx, q.listAnswersStmt, listAnswers, arg.Limit, arg.Offset)
+	rows, err := q.db.QueryContext(ctx, listAnswers, arg.Limit, arg.Offset)
 	if err != nil {
 		return nil, err
 	}
@@ -124,7 +124,7 @@ type UpdateAnswerParams struct {
 }
 
 func (q *Queries) UpdateAnswer(ctx context.Context, arg UpdateAnswerParams) error {
-	_, err := q.exec(ctx, q.updateAnswerStmt, updateAnswer,
+	_, err := q.db.ExecContext(ctx, updateAnswer,
 		arg.QuestionID,
 		arg.AnswerText,
 		arg.IsCorrect,

@@ -24,7 +24,7 @@ type CreateUserParams struct {
 }
 
 func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, error) {
-	row := q.queryRow(ctx, q.createUserStmt, createUser,
+	row := q.db.QueryRowContext(ctx, createUser,
 		arg.Username,
 		arg.Email,
 		arg.FullName,
@@ -49,7 +49,7 @@ WHERE id = $1
 `
 
 func (q *Queries) DeleteUser(ctx context.Context, id int32) error {
-	_, err := q.exec(ctx, q.deleteUserStmt, deleteUser, id)
+	_, err := q.db.ExecContext(ctx, deleteUser, id)
 	return err
 }
 
@@ -60,7 +60,7 @@ WHERE id = $1
 `
 
 func (q *Queries) GetUser(ctx context.Context, id int32) (User, error) {
-	row := q.queryRow(ctx, q.getUserStmt, getUser, id)
+	row := q.db.QueryRowContext(ctx, getUser, id)
 	var i User
 	err := row.Scan(
 		&i.ID,
@@ -87,7 +87,7 @@ type ListUsersParams struct {
 }
 
 func (q *Queries) ListUsers(ctx context.Context, arg ListUsersParams) ([]User, error) {
-	rows, err := q.query(ctx, q.listUsersStmt, listUsers, arg.Limit, arg.Offset)
+	rows, err := q.db.QueryContext(ctx, listUsers, arg.Limit, arg.Offset)
 	if err != nil {
 		return nil, err
 	}
@@ -121,23 +121,24 @@ const updateUser = `-- name: UpdateUser :exec
 UPDATE users
 SET username = $1,
     email = $2,
-    password_hashed = $3
+    full_name = $3,
+    password_hashed = $4
 WHERE id = $4
 `
 
 type UpdateUserParams struct {
 	Username       sql.NullString `json:"username"`
 	Email          sql.NullString `json:"email"`
+	FullName       sql.NullString `json:"full_name"`
 	PasswordHashed sql.NullString `json:"password_hashed"`
-	ID             int32          `json:"id"`
 }
 
 func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) error {
-	_, err := q.exec(ctx, q.updateUserStmt, updateUser,
+	_, err := q.db.ExecContext(ctx, updateUser,
 		arg.Username,
 		arg.Email,
+		arg.FullName,
 		arg.PasswordHashed,
-		arg.ID,
 	)
 	return err
 }

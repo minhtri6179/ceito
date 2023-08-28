@@ -29,7 +29,7 @@ type CreateScoreParams struct {
 }
 
 func (q *Queries) CreateScore(ctx context.Context, arg CreateScoreParams) (Score, error) {
-	row := q.queryRow(ctx, q.createScoreStmt, createScore,
+	row := q.db.QueryRowContext(ctx, createScore,
 		arg.TestID,
 		arg.ReadingScore,
 		arg.ListeningScore,
@@ -52,7 +52,7 @@ WHERE score_id = $1
 `
 
 func (q *Queries) DeleteScore(ctx context.Context, scoreID int32) error {
-	_, err := q.exec(ctx, q.deleteScoreStmt, deleteScore, scoreID)
+	_, err := q.db.ExecContext(ctx, deleteScore, scoreID)
 	return err
 }
 
@@ -63,7 +63,7 @@ WHERE score_id = $1
 `
 
 func (q *Queries) GetScore(ctx context.Context, scoreID int32) (Score, error) {
-	row := q.queryRow(ctx, q.getScoreStmt, getScore, scoreID)
+	row := q.db.QueryRowContext(ctx, getScore, scoreID)
 	var i Score
 	err := row.Scan(
 		&i.ScoreID,
@@ -88,7 +88,7 @@ type ListScoresParams struct {
 }
 
 func (q *Queries) ListScores(ctx context.Context, arg ListScoresParams) ([]Score, error) {
-	rows, err := q.query(ctx, q.listScoresStmt, listScores, arg.Limit, arg.Offset)
+	rows, err := q.db.QueryContext(ctx, listScores, arg.Limit, arg.Offset)
 	if err != nil {
 		return nil, err
 	}
@@ -134,7 +134,7 @@ type UpdateScoreParams struct {
 }
 
 func (q *Queries) UpdateScore(ctx context.Context, arg UpdateScoreParams) error {
-	_, err := q.exec(ctx, q.updateScoreStmt, updateScore,
+	_, err := q.db.ExecContext(ctx, updateScore,
 		arg.TestID,
 		arg.ReadingScore,
 		arg.ListeningScore,

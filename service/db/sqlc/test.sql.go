@@ -17,7 +17,7 @@ RETURNING test_id, user_id, created_at, update_at
 `
 
 func (q *Queries) CreateTest(ctx context.Context, userID sql.NullInt32) (Test, error) {
-	row := q.queryRow(ctx, q.createTestStmt, createTest, userID)
+	row := q.db.QueryRowContext(ctx, createTest, userID)
 	var i Test
 	err := row.Scan(
 		&i.TestID,
@@ -34,7 +34,7 @@ WHERE test_id = $1
 `
 
 func (q *Queries) DeleteTest(ctx context.Context, testID int32) error {
-	_, err := q.exec(ctx, q.deleteTestStmt, deleteTest, testID)
+	_, err := q.db.ExecContext(ctx, deleteTest, testID)
 	return err
 }
 
@@ -45,7 +45,7 @@ WHERE test_id = $1
 `
 
 func (q *Queries) GetTest(ctx context.Context, testID int32) (Test, error) {
-	row := q.queryRow(ctx, q.getTestStmt, getTest, testID)
+	row := q.db.QueryRowContext(ctx, getTest, testID)
 	var i Test
 	err := row.Scan(
 		&i.TestID,
@@ -69,7 +69,7 @@ type ListTestsParams struct {
 }
 
 func (q *Queries) ListTests(ctx context.Context, arg ListTestsParams) ([]Test, error) {
-	rows, err := q.query(ctx, q.listTestsStmt, listTests, arg.Limit, arg.Offset)
+	rows, err := q.db.QueryContext(ctx, listTests, arg.Limit, arg.Offset)
 	if err != nil {
 		return nil, err
 	}
@@ -108,6 +108,6 @@ type UpdateTestParams struct {
 }
 
 func (q *Queries) UpdateTest(ctx context.Context, arg UpdateTestParams) error {
-	_, err := q.exec(ctx, q.updateTestStmt, updateTest, arg.UserID, arg.TestID)
+	_, err := q.db.ExecContext(ctx, updateTest, arg.UserID, arg.TestID)
 	return err
 }

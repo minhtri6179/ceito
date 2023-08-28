@@ -11,24 +11,31 @@ import (
 )
 
 const createUser = `-- name: CreateUser :one
-INSERT INTO users (username, email, password_hashed)
-VALUES ($1, $2, $3)
-RETURNING id, username, email, password_hashed, created_at, update_at
+INSERT INTO users (username, email, full_name, password_hashed)
+VALUES ($1, $2, $3, $4)
+RETURNING id, username, email, full_name, password_hashed, created_at, update_at
 `
 
 type CreateUserParams struct {
 	Username       sql.NullString `json:"username"`
 	Email          sql.NullString `json:"email"`
+	FullName       sql.NullString `json:"full_name"`
 	PasswordHashed sql.NullString `json:"password_hashed"`
 }
 
 func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, error) {
-	row := q.queryRow(ctx, q.createUserStmt, createUser, arg.Username, arg.Email, arg.PasswordHashed)
+	row := q.queryRow(ctx, q.createUserStmt, createUser,
+		arg.Username,
+		arg.Email,
+		arg.FullName,
+		arg.PasswordHashed,
+	)
 	var i User
 	err := row.Scan(
 		&i.ID,
 		&i.Username,
 		&i.Email,
+		&i.FullName,
 		&i.PasswordHashed,
 		&i.CreatedAt,
 		&i.UpdateAt,
@@ -47,7 +54,7 @@ func (q *Queries) DeleteUser(ctx context.Context, id int32) error {
 }
 
 const getUser = `-- name: GetUser :one
-SELECT id, username, email, password_hashed, created_at, update_at
+SELECT id, username, email, full_name, password_hashed, created_at, update_at
 FROM users
 WHERE id = $1
 `
@@ -59,6 +66,7 @@ func (q *Queries) GetUser(ctx context.Context, id int32) (User, error) {
 		&i.ID,
 		&i.Username,
 		&i.Email,
+		&i.FullName,
 		&i.PasswordHashed,
 		&i.CreatedAt,
 		&i.UpdateAt,
@@ -67,7 +75,7 @@ func (q *Queries) GetUser(ctx context.Context, id int32) (User, error) {
 }
 
 const listUsers = `-- name: ListUsers :many
-SELECT id, username, email, password_hashed, created_at, update_at
+SELECT id, username, email, full_name, password_hashed, created_at, update_at
 FROM users
 ORDER BY id
 LIMIT $1 OFFSET $2
@@ -91,6 +99,7 @@ func (q *Queries) ListUsers(ctx context.Context, arg ListUsersParams) ([]User, e
 			&i.ID,
 			&i.Username,
 			&i.Email,
+			&i.FullName,
 			&i.PasswordHashed,
 			&i.CreatedAt,
 			&i.UpdateAt,

@@ -17,7 +17,8 @@ CREATE TABLE "users" (
     "id" integer PRIMARY KEY,
     "username" varchar,
     "email" varchar(255),
-    "password_hashed" varchar,
+    "full_name" varchar(255),
+    "password_hashed" varchar(255),
     "created_at" timestamptz DEFAULT (now()),
     "update_at" timestamp
 );

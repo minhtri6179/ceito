@@ -7,24 +7,25 @@ package db
 
 import (
 	"context"
-	"database/sql"
+
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 const createUser = `-- name: CreateUser :one
 INSERT INTO users (username, email, full_name, password_hashed)
 VALUES ($1, $2, $3, $4)
-RETURNING id, username, email, full_name, password_hashed, created_at, update_at
+RETURNING username, email, full_name, password_hashed, created_at, update_at
 `
 
 type CreateUserParams struct {
-	Username       sql.NullString `json:"username"`
-	Email          sql.NullString `json:"email"`
-	FullName       sql.NullString `json:"full_name"`
-	PasswordHashed sql.NullString `json:"password_hashed"`
+	Username       string      `json:"username"`
+	Email          pgtype.Text `json:"email"`
+	FullName       pgtype.Text `json:"full_name"`
+	PasswordHashed pgtype.Text `json:"password_hashed"`
 }
 
 func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, error) {
-	row := q.db.QueryRowContext(ctx, createUser,
+	row := q.db.QueryRow(ctx, createUser,
 		arg.Username,
 		arg.Email,
 		arg.FullName,
@@ -32,7 +33,6 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 	)
 	var i User
 	err := row.Scan(
-		&i.ID,
 		&i.Username,
 		&i.Email,
 		&i.FullName,
@@ -45,25 +45,24 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 
 const deleteUser = `-- name: DeleteUser :exec
 DELETE FROM users
-WHERE id = $1
+WHERE username = $1
 `
 
-func (q *Queries) DeleteUser(ctx context.Context, id int32) error {
-	_, err := q.db.ExecContext(ctx, deleteUser, id)
+func (q *Queries) DeleteUser(ctx context.Context, username string) error {
+	_, err := q.db.Exec(ctx, deleteUser, username)
 	return err
 }
 
 const getUser = `-- name: GetUser :one
-SELECT id, username, email, full_name, password_hashed, created_at, update_at
+SELECT username, email, full_name, password_hashed, created_at, update_at
 FROM users
-WHERE id = $1
+WHERE username = $1
 `
 
-func (q *Queries) GetUser(ctx context.Context, id int32) (User, error) {
-	row := q.db.QueryRowContext(ctx, getUser, id)
+func (q *Queries) GetUser(ctx context.Context, username string) (User, error) {
+	row := q.db.QueryRow(ctx, getUser, username)
 	var i User
 	err := row.Scan(
-		&i.ID,
 		&i.Username,
 		&i.Email,
 		&i.FullName,
@@ -72,49 +71,6 @@ func (q *Queries) GetUser(ctx context.Context, id int32) (User, error) {
 		&i.UpdateAt,
 	)
 	return i, err
-}
-
-const listUsers = `-- name: ListUsers :many
-SELECT id, username, email, full_name, password_hashed, created_at, update_at
-FROM users
-ORDER BY id
-LIMIT $1 OFFSET $2
-`
-
-type ListUsersParams struct {
-	Limit  int32 `json:"limit"`
-	Offset int32 `json:"offset"`
-}
-
-func (q *Queries) ListUsers(ctx context.Context, arg ListUsersParams) ([]User, error) {
-	rows, err := q.db.QueryContext(ctx, listUsers, arg.Limit, arg.Offset)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	var items []User
-	for rows.Next() {
-		var i User
-		if err := rows.Scan(
-			&i.ID,
-			&i.Username,
-			&i.Email,
-			&i.FullName,
-			&i.PasswordHashed,
-			&i.CreatedAt,
-			&i.UpdateAt,
-		); err != nil {
-			return nil, err
-		}
-		items = append(items, i)
-	}
-	if err := rows.Close(); err != nil {
-		return nil, err
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return items, nil
 }
 
 const updateUser = `-- name: UpdateUser :exec
@@ -127,14 +83,14 @@ WHERE id = $4
 `
 
 type UpdateUserParams struct {
-	Username       sql.NullString `json:"username"`
-	Email          sql.NullString `json:"email"`
-	FullName       sql.NullString `json:"full_name"`
-	PasswordHashed sql.NullString `json:"password_hashed"`
+	Username       string      `json:"username"`
+	Email          pgtype.Text `json:"email"`
+	FullName       pgtype.Text `json:"full_name"`
+	PasswordHashed pgtype.Text `json:"password_hashed"`
 }
 
 func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) error {
-	_, err := q.db.ExecContext(ctx, updateUser,
+	_, err := q.db.Exec(ctx, updateUser,
 		arg.Username,
 		arg.Email,
 		arg.FullName,

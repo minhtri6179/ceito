@@ -1,5 +1,5 @@
 -- name: CreateTest :one
-INSERT INTO test (user_id)
+INSERT INTO test (username)
 VALUES ($1)
 RETURNING *;
 -- name: GetTest :one
@@ -13,7 +13,7 @@ ORDER BY test_id
 LIMIT $1 OFFSET $2;
 -- name: UpdateTest :exec
 UPDATE test
-SET user_id = $1
+SET username = $1
 WHERE test_id = $2;
 -- name: DeleteTest :exec
 DELETE FROM test

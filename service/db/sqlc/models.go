@@ -5,47 +5,46 @@
 package db
 
 import (
-	"database/sql"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type Answer struct {
-	AnswerID   int32          `json:"answer_id"`
-	QuestionID sql.NullInt32  `json:"question_id"`
-	AnswerText sql.NullString `json:"answer_text"`
-	IsCorrect  sql.NullBool   `json:"is_correct"`
-	CreatedAt  sql.NullTime   `json:"created_at"`
-	UpdateAt   sql.NullTime   `json:"update_at"`
+	AnswerID   int32              `json:"answer_id"`
+	QuestionID pgtype.Int4        `json:"question_id"`
+	AnswerText pgtype.Text        `json:"answer_text"`
+	IsCorrect  pgtype.Bool        `json:"is_correct"`
+	CreatedAt  pgtype.Timestamptz `json:"created_at"`
+	UpdateAt   pgtype.Timestamp   `json:"update_at"`
 }
 
 type Question struct {
-	QuestionID   int32          `json:"question_id"`
-	QuestionText sql.NullString `json:"question_text"`
-	AnswerID     sql.NullInt32  `json:"answer_id"`
-	CreatedAt    sql.NullTime   `json:"created_at"`
-	UpdateAt     sql.NullTime   `json:"update_at"`
+	QuestionID   int32              `json:"question_id"`
+	QuestionText pgtype.Text        `json:"question_text"`
+	AnswerID     pgtype.Int4        `json:"answer_id"`
+	CreatedAt    pgtype.Timestamptz `json:"created_at"`
+	UpdateAt     pgtype.Timestamp   `json:"update_at"`
 }
 
 type Score struct {
-	ScoreID        int32         `json:"score_id"`
-	TestID         sql.NullInt32 `json:"test_id"`
-	ReadingScore   sql.NullInt32 `json:"reading_score"`
-	ListeningScore sql.NullInt32 `json:"listening_score"`
-	TotalScore     sql.NullInt32 `json:"total_score"`
+	ScoreID        int32       `json:"score_id"`
+	TestID         pgtype.Int4 `json:"test_id"`
+	ReadingScore   pgtype.Int4 `json:"reading_score"`
+	ListeningScore pgtype.Int4 `json:"listening_score"`
+	TotalScore     pgtype.Int4 `json:"total_score"`
 }
 
 type Test struct {
-	TestID    int32         `json:"test_id"`
-	UserID    sql.NullInt32 `json:"user_id"`
-	CreatedAt sql.NullTime  `json:"created_at"`
-	UpdateAt  sql.NullTime  `json:"update_at"`
+	TestID    int32              `json:"test_id"`
+	Username  pgtype.Text        `json:"username"`
+	CreatedAt pgtype.Timestamptz `json:"created_at"`
+	UpdateAt  pgtype.Timestamp   `json:"update_at"`
 }
 
 type User struct {
-	ID             int32          `json:"id"`
-	Username       sql.NullString `json:"username"`
-	Email          sql.NullString `json:"email"`
-	FullName       sql.NullString `json:"full_name"`
-	PasswordHashed sql.NullString `json:"password_hashed"`
-	CreatedAt      sql.NullTime   `json:"created_at"`
-	UpdateAt       sql.NullTime   `json:"update_at"`
+	Username       string             `json:"username"`
+	Email          pgtype.Text        `json:"email"`
+	FullName       pgtype.Text        `json:"full_name"`
+	PasswordHashed pgtype.Text        `json:"password_hashed"`
+	CreatedAt      pgtype.Timestamptz `json:"created_at"`
+	UpdateAt       pgtype.Timestamp   `json:"update_at"`
 }

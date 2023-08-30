@@ -7,21 +7,22 @@ package db
 
 import (
 	"context"
-	"database/sql"
+
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 const createTest = `-- name: CreateTest :one
-INSERT INTO test (user_id)
+INSERT INTO test (username)
 VALUES ($1)
-RETURNING test_id, user_id, created_at, update_at
+RETURNING test_id, username, created_at, update_at
 `
 
-func (q *Queries) CreateTest(ctx context.Context, userID sql.NullInt32) (Test, error) {
-	row := q.db.QueryRowContext(ctx, createTest, userID)
+func (q *Queries) CreateTest(ctx context.Context, username pgtype.Text) (Test, error) {
+	row := q.db.QueryRow(ctx, createTest, username)
 	var i Test
 	err := row.Scan(
 		&i.TestID,
-		&i.UserID,
+		&i.Username,
 		&i.CreatedAt,
 		&i.UpdateAt,
 	)
@@ -34,22 +35,22 @@ WHERE test_id = $1
 `
 
 func (q *Queries) DeleteTest(ctx context.Context, testID int32) error {
-	_, err := q.db.ExecContext(ctx, deleteTest, testID)
+	_, err := q.db.Exec(ctx, deleteTest, testID)
 	return err
 }
 
 const getTest = `-- name: GetTest :one
-SELECT test_id, user_id, created_at, update_at
+SELECT test_id, username, created_at, update_at
 FROM test
 WHERE test_id = $1
 `
 
 func (q *Queries) GetTest(ctx context.Context, testID int32) (Test, error) {
-	row := q.db.QueryRowContext(ctx, getTest, testID)
+	row := q.db.QueryRow(ctx, getTest, testID)
 	var i Test
 	err := row.Scan(
 		&i.TestID,
-		&i.UserID,
+		&i.Username,
 		&i.CreatedAt,
 		&i.UpdateAt,
 	)
@@ -57,7 +58,7 @@ func (q *Queries) GetTest(ctx context.Context, testID int32) (Test, error) {
 }
 
 const listTests = `-- name: ListTests :many
-SELECT test_id, user_id, created_at, update_at
+SELECT test_id, username, created_at, update_at
 FROM test
 ORDER BY test_id
 LIMIT $1 OFFSET $2
@@ -69,26 +70,23 @@ type ListTestsParams struct {
 }
 
 func (q *Queries) ListTests(ctx context.Context, arg ListTestsParams) ([]Test, error) {
-	rows, err := q.db.QueryContext(ctx, listTests, arg.Limit, arg.Offset)
+	rows, err := q.db.Query(ctx, listTests, arg.Limit, arg.Offset)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []Test
+	items := []Test{}
 	for rows.Next() {
 		var i Test
 		if err := rows.Scan(
 			&i.TestID,
-			&i.UserID,
+			&i.Username,
 			&i.CreatedAt,
 			&i.UpdateAt,
 		); err != nil {
 			return nil, err
 		}
 		items = append(items, i)
-	}
-	if err := rows.Close(); err != nil {
-		return nil, err
 	}
 	if err := rows.Err(); err != nil {
 		return nil, err
@@ -98,16 +96,16 @@ func (q *Queries) ListTests(ctx context.Context, arg ListTestsParams) ([]Test, e
 
 const updateTest = `-- name: UpdateTest :exec
 UPDATE test
-SET user_id = $1
+SET username = $1
 WHERE test_id = $2
 `
 
 type UpdateTestParams struct {
-	UserID sql.NullInt32 `json:"user_id"`
-	TestID int32         `json:"test_id"`
+	Username pgtype.Text `json:"username"`
+	TestID   int32       `json:"test_id"`
 }
 
 func (q *Queries) UpdateTest(ctx context.Context, arg UpdateTestParams) error {
-	_, err := q.db.ExecContext(ctx, updateTest, arg.UserID, arg.TestID)
+	_, err := q.db.Exec(ctx, updateTest, arg.Username, arg.TestID)
 	return err
 }

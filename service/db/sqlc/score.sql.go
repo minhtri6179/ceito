@@ -7,7 +7,8 @@ package db
 
 import (
 	"context"
-	"database/sql"
+
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 const createScore = `-- name: CreateScore :one
@@ -22,14 +23,14 @@ RETURNING score_id, test_id, reading_score, listening_score, total_score
 `
 
 type CreateScoreParams struct {
-	TestID         sql.NullInt32 `json:"test_id"`
-	ReadingScore   sql.NullInt32 `json:"reading_score"`
-	ListeningScore sql.NullInt32 `json:"listening_score"`
-	TotalScore     sql.NullInt32 `json:"total_score"`
+	TestID         pgtype.Int4 `json:"test_id"`
+	ReadingScore   pgtype.Int4 `json:"reading_score"`
+	ListeningScore pgtype.Int4 `json:"listening_score"`
+	TotalScore     pgtype.Int4 `json:"total_score"`
 }
 
 func (q *Queries) CreateScore(ctx context.Context, arg CreateScoreParams) (Score, error) {
-	row := q.db.QueryRowContext(ctx, createScore,
+	row := q.db.QueryRow(ctx, createScore,
 		arg.TestID,
 		arg.ReadingScore,
 		arg.ListeningScore,
@@ -52,7 +53,7 @@ WHERE score_id = $1
 `
 
 func (q *Queries) DeleteScore(ctx context.Context, scoreID int32) error {
-	_, err := q.db.ExecContext(ctx, deleteScore, scoreID)
+	_, err := q.db.Exec(ctx, deleteScore, scoreID)
 	return err
 }
 
@@ -63,7 +64,7 @@ WHERE score_id = $1
 `
 
 func (q *Queries) GetScore(ctx context.Context, scoreID int32) (Score, error) {
-	row := q.db.QueryRowContext(ctx, getScore, scoreID)
+	row := q.db.QueryRow(ctx, getScore, scoreID)
 	var i Score
 	err := row.Scan(
 		&i.ScoreID,
@@ -88,12 +89,12 @@ type ListScoresParams struct {
 }
 
 func (q *Queries) ListScores(ctx context.Context, arg ListScoresParams) ([]Score, error) {
-	rows, err := q.db.QueryContext(ctx, listScores, arg.Limit, arg.Offset)
+	rows, err := q.db.Query(ctx, listScores, arg.Limit, arg.Offset)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []Score
+	items := []Score{}
 	for rows.Next() {
 		var i Score
 		if err := rows.Scan(
@@ -106,9 +107,6 @@ func (q *Queries) ListScores(ctx context.Context, arg ListScoresParams) ([]Score
 			return nil, err
 		}
 		items = append(items, i)
-	}
-	if err := rows.Close(); err != nil {
-		return nil, err
 	}
 	if err := rows.Err(); err != nil {
 		return nil, err
@@ -126,15 +124,15 @@ WHERE score_id = $5
 `
 
 type UpdateScoreParams struct {
-	TestID         sql.NullInt32 `json:"test_id"`
-	ReadingScore   sql.NullInt32 `json:"reading_score"`
-	ListeningScore sql.NullInt32 `json:"listening_score"`
-	TotalScore     sql.NullInt32 `json:"total_score"`
-	ScoreID        int32         `json:"score_id"`
+	TestID         pgtype.Int4 `json:"test_id"`
+	ReadingScore   pgtype.Int4 `json:"reading_score"`
+	ListeningScore pgtype.Int4 `json:"listening_score"`
+	TotalScore     pgtype.Int4 `json:"total_score"`
+	ScoreID        int32       `json:"score_id"`
 }
 
 func (q *Queries) UpdateScore(ctx context.Context, arg UpdateScoreParams) error {
-	_, err := q.db.ExecContext(ctx, updateScore,
+	_, err := q.db.Exec(ctx, updateScore,
 		arg.TestID,
 		arg.ReadingScore,
 		arg.ListeningScore,

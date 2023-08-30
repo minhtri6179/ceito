@@ -7,7 +7,8 @@ package db
 
 import (
 	"context"
-	"database/sql"
+
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 const createQuestion = `-- name: CreateQuestion :one
@@ -17,12 +18,12 @@ RETURNING question_id, question_text, answer_id, created_at, update_at
 `
 
 type CreateQuestionParams struct {
-	QuestionText sql.NullString `json:"question_text"`
-	AnswerID     sql.NullInt32  `json:"answer_id"`
+	QuestionText pgtype.Text `json:"question_text"`
+	AnswerID     pgtype.Int4 `json:"answer_id"`
 }
 
 func (q *Queries) CreateQuestion(ctx context.Context, arg CreateQuestionParams) (Question, error) {
-	row := q.db.QueryRowContext(ctx, createQuestion, arg.QuestionText, arg.AnswerID)
+	row := q.db.QueryRow(ctx, createQuestion, arg.QuestionText, arg.AnswerID)
 	var i Question
 	err := row.Scan(
 		&i.QuestionID,
@@ -40,7 +41,7 @@ WHERE question_id = $1
 `
 
 func (q *Queries) DeleteQuestion(ctx context.Context, questionID int32) error {
-	_, err := q.db.ExecContext(ctx, deleteQuestion, questionID)
+	_, err := q.db.Exec(ctx, deleteQuestion, questionID)
 	return err
 }
 
@@ -51,7 +52,7 @@ WHERE question_id = $1
 `
 
 func (q *Queries) GetQuestion(ctx context.Context, questionID int32) (Question, error) {
-	row := q.db.QueryRowContext(ctx, getQuestion, questionID)
+	row := q.db.QueryRow(ctx, getQuestion, questionID)
 	var i Question
 	err := row.Scan(
 		&i.QuestionID,
@@ -76,12 +77,12 @@ type ListQuestionsParams struct {
 }
 
 func (q *Queries) ListQuestions(ctx context.Context, arg ListQuestionsParams) ([]Question, error) {
-	rows, err := q.db.QueryContext(ctx, listQuestions, arg.Limit, arg.Offset)
+	rows, err := q.db.Query(ctx, listQuestions, arg.Limit, arg.Offset)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []Question
+	items := []Question{}
 	for rows.Next() {
 		var i Question
 		if err := rows.Scan(
@@ -94,9 +95,6 @@ func (q *Queries) ListQuestions(ctx context.Context, arg ListQuestionsParams) ([
 			return nil, err
 		}
 		items = append(items, i)
-	}
-	if err := rows.Close(); err != nil {
-		return nil, err
 	}
 	if err := rows.Err(); err != nil {
 		return nil, err
@@ -112,12 +110,12 @@ WHERE question_id = $3
 `
 
 type UpdateQuestionParams struct {
-	QuestionText sql.NullString `json:"question_text"`
-	AnswerID     sql.NullInt32  `json:"answer_id"`
-	QuestionID   int32          `json:"question_id"`
+	QuestionText pgtype.Text `json:"question_text"`
+	AnswerID     pgtype.Int4 `json:"answer_id"`
+	QuestionID   int32       `json:"question_id"`
 }
 
 func (q *Queries) UpdateQuestion(ctx context.Context, arg UpdateQuestionParams) error {
-	_, err := q.db.ExecContext(ctx, updateQuestion, arg.QuestionText, arg.AnswerID, arg.QuestionID)
+	_, err := q.db.Exec(ctx, updateQuestion, arg.QuestionText, arg.AnswerID, arg.QuestionID)
 	return err
 }

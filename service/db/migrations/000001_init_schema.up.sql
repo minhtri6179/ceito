@@ -14,17 +14,16 @@ CREATE TABLE "answer" (
     "update_at" timestamp
 );
 CREATE TABLE "users" (
-    "id" integer PRIMARY KEY,
-    "username" varchar,
-    "email" varchar(255),
-    "full_name" varchar(255),
-    "password_hashed" varchar(255),
+    "username" varchar PRIMARY KEY,
+    "email" varchar,
+    "full_name" varchar,
+    "password_hashed" varchar,
     "created_at" timestamptz DEFAULT (now()),
     "update_at" timestamp
 );
 CREATE TABLE "test" (
     "test_id" integer PRIMARY KEY,
-    "user_id" integer,
+    "username" varchar,
     "created_at" timestamptz DEFAULT (now()),
     "update_at" timestamp
 );
@@ -40,6 +39,6 @@ CREATE INDEX ON "answer" ("question_id");
 ALTER TABLE "answer"
 ADD FOREIGN KEY ("question_id") REFERENCES "question" ("question_id");
 ALTER TABLE "test"
-ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
+ADD FOREIGN KEY ("username") REFERENCES "users" ("username");
 ALTER TABLE "score"
 ADD FOREIGN KEY ("test_id") REFERENCES "test" ("test_id");

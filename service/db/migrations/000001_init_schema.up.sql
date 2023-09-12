@@ -15,11 +15,11 @@ CREATE TABLE "answer" (
 );
 CREATE TABLE "users" (
     "username" varchar PRIMARY KEY,
-    "email" varchar,
-    "full_name" varchar,
-    "password_hashed" varchar,
-    "created_at" timestamptz DEFAULT (now()),
-    "update_at" timestamp
+    "email" varchar UNIQUE not null,
+    "full_name" varchar not null,
+    "password_hashed" varchar not null,
+    "created_at" timestamptz NOT NULL DEFAULT (now()),
+    "update_at" timestamptz NOT NULL DEFAULT('0001-01-01 00:00:00Z')
 );
 CREATE TABLE "test" (
     "test_id" integer PRIMARY KEY,

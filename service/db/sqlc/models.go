@@ -5,6 +5,8 @@
 package db
 
 import (
+	"time"
+
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
@@ -41,10 +43,10 @@ type Test struct {
 }
 
 type User struct {
-	Username       string             `json:"username"`
-	Email          pgtype.Text        `json:"email"`
-	FullName       pgtype.Text        `json:"full_name"`
-	PasswordHashed pgtype.Text        `json:"password_hashed"`
-	CreatedAt      pgtype.Timestamptz `json:"created_at"`
-	UpdateAt       pgtype.Timestamp   `json:"update_at"`
+	Username       string    `json:"username"`
+	Email          string    `json:"email"`
+	FullName       string    `json:"full_name"`
+	PasswordHashed string    `json:"password_hashed"`
+	CreatedAt      time.Time `json:"created_at"`
+	UpdateAt       time.Time `json:"update_at"`
 }

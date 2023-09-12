@@ -7,8 +7,6 @@ package db
 
 import (
 	"context"
-
-	"github.com/jackc/pgx/v5/pgtype"
 )
 
 const createUser = `-- name: CreateUser :one
@@ -18,10 +16,10 @@ RETURNING username, email, full_name, password_hashed, created_at, update_at
 `
 
 type CreateUserParams struct {
-	Username       string      `json:"username"`
-	Email          pgtype.Text `json:"email"`
-	FullName       pgtype.Text `json:"full_name"`
-	PasswordHashed pgtype.Text `json:"password_hashed"`
+	Username       string `json:"username"`
+	Email          string `json:"email"`
+	FullName       string `json:"full_name"`
+	PasswordHashed string `json:"password_hashed"`
 }
 
 func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, error) {
@@ -83,10 +81,10 @@ WHERE id = $4
 `
 
 type UpdateUserParams struct {
-	Username       string      `json:"username"`
-	Email          pgtype.Text `json:"email"`
-	FullName       pgtype.Text `json:"full_name"`
-	PasswordHashed pgtype.Text `json:"password_hashed"`
+	Username       string `json:"username"`
+	Email          string `json:"email"`
+	FullName       string `json:"full_name"`
+	PasswordHashed string `json:"password_hashed"`
 }
 
 func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) error {

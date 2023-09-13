@@ -10,6 +10,13 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
+type Account struct {
+	ID        int64       `json:"id"`
+	Owner     string      `json:"owner"`
+	TestID    pgtype.Int4 `json:"test_id"`
+	CreatedAt time.Time   `json:"created_at"`
+}
+
 type Answer struct {
 	AnswerID   int32              `json:"answer_id"`
 	QuestionID pgtype.Int4        `json:"question_id"`

@@ -1,3 +1,9 @@
+CREATE TABLE "accounts" (
+    "id" bigserial PRIMARY KEY,
+    "owner" varchar NOT NULL,
+    "test_id" integer,
+    "created_at" timestamptz NOT NULL DEFAULT (now())
+);
 CREATE TABLE "question" (
     "question_id" integer PRIMARY KEY,
     "question_text" text,
@@ -41,4 +47,8 @@ ADD FOREIGN KEY ("question_id") REFERENCES "question" ("question_id");
 ALTER TABLE "test"
 ADD FOREIGN KEY ("username") REFERENCES "users" ("username");
 ALTER TABLE "score"
+ADD FOREIGN KEY ("test_id") REFERENCES "test" ("test_id");
+ALTER TABLE "accounts"
+ADD FOREIGN KEY ("owner") REFERENCES "users" ("username");
+ALTER TABLE "accounts"
 ADD FOREIGN KEY ("test_id") REFERENCES "test" ("test_id");

@@ -18,17 +18,17 @@ type Querier interface {
 	CreateTest(ctx context.Context, username pgtype.Text) (Test, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
 	DeleteAccount(ctx context.Context, id int64) error
-	DeleteAnswer(ctx context.Context, answerID int32) error
-	DeleteQuestion(ctx context.Context, questionID int32) error
-	DeleteScore(ctx context.Context, scoreID int32) error
-	DeleteTest(ctx context.Context, testID int32) error
+	DeleteAnswer(ctx context.Context, answerID int64) error
+	DeleteQuestion(ctx context.Context, questionID int64) error
+	DeleteScore(ctx context.Context, scoreID int64) error
+	DeleteTest(ctx context.Context, testID int64) error
 	DeleteUser(ctx context.Context, username string) error
 	GetAccount(ctx context.Context, id int64) (Account, error)
 	GetAccountForUpdate(ctx context.Context, id int64) (Account, error)
-	GetAnswer(ctx context.Context, answerID int32) (Answer, error)
-	GetQuestion(ctx context.Context, questionID int32) (Question, error)
-	GetScore(ctx context.Context, scoreID int32) (Score, error)
-	GetTest(ctx context.Context, testID int32) (Test, error)
+	GetAnswer(ctx context.Context, answerID int64) (Answer, error)
+	GetQuestion(ctx context.Context, questionID int64) (Question, error)
+	GetScore(ctx context.Context, scoreID int64) (Score, error)
+	GetTest(ctx context.Context, testID int64) (Test, error)
 	GetUser(ctx context.Context, username string) (User, error)
 	ListAccounts(ctx context.Context, arg ListAccountsParams) ([]Account, error)
 	ListAnswers(ctx context.Context, arg ListAnswersParams) ([]Answer, error)

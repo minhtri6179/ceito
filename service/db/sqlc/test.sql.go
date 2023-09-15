@@ -34,7 +34,7 @@ DELETE FROM test
 WHERE test_id = $1
 `
 
-func (q *Queries) DeleteTest(ctx context.Context, testID int32) error {
+func (q *Queries) DeleteTest(ctx context.Context, testID int64) error {
 	_, err := q.db.Exec(ctx, deleteTest, testID)
 	return err
 }
@@ -45,7 +45,7 @@ FROM test
 WHERE test_id = $1
 `
 
-func (q *Queries) GetTest(ctx context.Context, testID int32) (Test, error) {
+func (q *Queries) GetTest(ctx context.Context, testID int64) (Test, error) {
 	row := q.db.QueryRow(ctx, getTest, testID)
 	var i Test
 	err := row.Scan(
@@ -102,7 +102,7 @@ WHERE test_id = $2
 
 type UpdateTestParams struct {
 	Username pgtype.Text `json:"username"`
-	TestID   int32       `json:"test_id"`
+	TestID   int64       `json:"test_id"`
 }
 
 func (q *Queries) UpdateTest(ctx context.Context, arg UpdateTestParams) error {

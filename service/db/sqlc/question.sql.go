@@ -40,7 +40,7 @@ DELETE FROM question
 WHERE question_id = $1
 `
 
-func (q *Queries) DeleteQuestion(ctx context.Context, questionID int32) error {
+func (q *Queries) DeleteQuestion(ctx context.Context, questionID int64) error {
 	_, err := q.db.Exec(ctx, deleteQuestion, questionID)
 	return err
 }
@@ -51,7 +51,7 @@ FROM question
 WHERE question_id = $1
 `
 
-func (q *Queries) GetQuestion(ctx context.Context, questionID int32) (Question, error) {
+func (q *Queries) GetQuestion(ctx context.Context, questionID int64) (Question, error) {
 	row := q.db.QueryRow(ctx, getQuestion, questionID)
 	var i Question
 	err := row.Scan(
@@ -112,7 +112,7 @@ WHERE question_id = $3
 type UpdateQuestionParams struct {
 	QuestionText pgtype.Text `json:"question_text"`
 	AnswerID     pgtype.Int4 `json:"answer_id"`
-	QuestionID   int32       `json:"question_id"`
+	QuestionID   int64       `json:"question_id"`
 }
 
 func (q *Queries) UpdateQuestion(ctx context.Context, arg UpdateQuestionParams) error {

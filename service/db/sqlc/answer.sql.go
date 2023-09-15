@@ -42,7 +42,7 @@ DELETE FROM answer
 WHERE answer_id = $1
 `
 
-func (q *Queries) DeleteAnswer(ctx context.Context, answerID int32) error {
+func (q *Queries) DeleteAnswer(ctx context.Context, answerID int64) error {
 	_, err := q.db.Exec(ctx, deleteAnswer, answerID)
 	return err
 }
@@ -53,7 +53,7 @@ FROM answer
 WHERE answer_id = $1
 `
 
-func (q *Queries) GetAnswer(ctx context.Context, answerID int32) (Answer, error) {
+func (q *Queries) GetAnswer(ctx context.Context, answerID int64) (Answer, error) {
 	row := q.db.QueryRow(ctx, getAnswer, answerID)
 	var i Answer
 	err := row.Scan(
@@ -118,7 +118,7 @@ type UpdateAnswerParams struct {
 	QuestionID pgtype.Int4 `json:"question_id"`
 	AnswerText pgtype.Text `json:"answer_text"`
 	IsCorrect  pgtype.Bool `json:"is_correct"`
-	AnswerID   int32       `json:"answer_id"`
+	AnswerID   int64       `json:"answer_id"`
 }
 
 func (q *Queries) UpdateAnswer(ctx context.Context, arg UpdateAnswerParams) error {

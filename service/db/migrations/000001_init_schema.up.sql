@@ -5,14 +5,14 @@ CREATE TABLE "accounts" (
     "created_at" timestamptz NOT NULL DEFAULT (now())
 );
 CREATE TABLE "question" (
-    "question_id" integer PRIMARY KEY,
+    "question_id" bigserial PRIMARY KEY,
     "question_text" text,
     "answer_id" integer,
     "created_at" timestamptz DEFAULT (now()),
     "update_at" timestamp
 );
 CREATE TABLE "answer" (
-    "answer_id" integer PRIMARY KEY,
+    "answer_id" bigserial PRIMARY KEY,
     "question_id" integer,
     "answer_text" text,
     "is_correct" boolean,
@@ -28,13 +28,13 @@ CREATE TABLE "users" (
     "update_at" timestamptz NOT NULL DEFAULT('0001-01-01 00:00:00Z')
 );
 CREATE TABLE "test" (
-    "test_id" integer PRIMARY KEY,
+    "test_id" bigserial PRIMARY KEY,
     "username" varchar,
     "created_at" timestamptz DEFAULT (now()),
     "update_at" timestamp
 );
 CREATE TABLE "score" (
-    "score_id" integer PRIMARY KEY,
+    "score_id" bigserial PRIMARY KEY,
     "test_id" integer,
     "reading_score" integer,
     "listening_score" integer,

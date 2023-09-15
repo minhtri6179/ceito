@@ -18,7 +18,7 @@ type Account struct {
 }
 
 type Answer struct {
-	AnswerID   int32              `json:"answer_id"`
+	AnswerID   int64              `json:"answer_id"`
 	QuestionID pgtype.Int4        `json:"question_id"`
 	AnswerText pgtype.Text        `json:"answer_text"`
 	IsCorrect  pgtype.Bool        `json:"is_correct"`
@@ -27,7 +27,7 @@ type Answer struct {
 }
 
 type Question struct {
-	QuestionID   int32              `json:"question_id"`
+	QuestionID   int64              `json:"question_id"`
 	QuestionText pgtype.Text        `json:"question_text"`
 	AnswerID     pgtype.Int4        `json:"answer_id"`
 	CreatedAt    pgtype.Timestamptz `json:"created_at"`
@@ -35,7 +35,7 @@ type Question struct {
 }
 
 type Score struct {
-	ScoreID        int32       `json:"score_id"`
+	ScoreID        int64       `json:"score_id"`
 	TestID         pgtype.Int4 `json:"test_id"`
 	ReadingScore   pgtype.Int4 `json:"reading_score"`
 	ListeningScore pgtype.Int4 `json:"listening_score"`
@@ -43,7 +43,7 @@ type Score struct {
 }
 
 type Test struct {
-	TestID    int32              `json:"test_id"`
+	TestID    int64              `json:"test_id"`
 	Username  pgtype.Text        `json:"username"`
 	CreatedAt pgtype.Timestamptz `json:"created_at"`
 	UpdateAt  pgtype.Timestamp   `json:"update_at"`

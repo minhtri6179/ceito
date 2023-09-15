@@ -52,7 +52,7 @@ DELETE FROM score
 WHERE score_id = $1
 `
 
-func (q *Queries) DeleteScore(ctx context.Context, scoreID int32) error {
+func (q *Queries) DeleteScore(ctx context.Context, scoreID int64) error {
 	_, err := q.db.Exec(ctx, deleteScore, scoreID)
 	return err
 }
@@ -63,7 +63,7 @@ FROM score
 WHERE score_id = $1
 `
 
-func (q *Queries) GetScore(ctx context.Context, scoreID int32) (Score, error) {
+func (q *Queries) GetScore(ctx context.Context, scoreID int64) (Score, error) {
 	row := q.db.QueryRow(ctx, getScore, scoreID)
 	var i Score
 	err := row.Scan(
@@ -128,7 +128,7 @@ type UpdateScoreParams struct {
 	ReadingScore   pgtype.Int4 `json:"reading_score"`
 	ListeningScore pgtype.Int4 `json:"listening_score"`
 	TotalScore     pgtype.Int4 `json:"total_score"`
-	ScoreID        int32       `json:"score_id"`
+	ScoreID        int64       `json:"score_id"`
 }
 
 func (q *Queries) UpdateScore(ctx context.Context, arg UpdateScoreParams) error {

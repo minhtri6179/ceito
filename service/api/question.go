@@ -11,7 +11,7 @@ import (
 
 type createQuestionRequest struct {
 	QuestionText pgtype.Text `json:"question_text"`
-	AnswerID     pgtype.Int4 `json:"answer_id" binding:"required,number"`
+	AnswerID     pgtype.Int4 `json:"answer_id"`
 }
 
 func (server *Server) createQuestion(ctx *gin.Context) {

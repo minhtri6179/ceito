@@ -12,6 +12,7 @@ import (
 type createQuestionRequest struct {
 	QuestionText pgtype.Text `json:"question_text"`
 	AnswerID     pgtype.Int4 `json:"answer_id"`
+	TestName     pgtype.Text `json:"test_name"`
 }
 
 func (server *Server) createQuestion(ctx *gin.Context) {
@@ -24,6 +25,7 @@ func (server *Server) createQuestion(ctx *gin.Context) {
 	arg := db.CreateQuestionParams{
 		QuestionText: req.QuestionText,
 		AnswerID:     req.AnswerID,
+		TestName:     req.TestName,
 	}
 	user, err := server.store.CreateQuestion(ctx, arg)
 	if err != nil {
@@ -42,7 +44,6 @@ type updateQuestionRequest struct {
 
 func (server *Server) updateQuestion(ctx *gin.Context) {
 	var req updateQuestionRequest
-
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -52,14 +53,20 @@ func (server *Server) updateQuestion(ctx *gin.Context) {
 		return
 	}
 
+	te, err := server.store.GetQuestion(ctx, req.ID)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
 	arg := db.UpdateQuestionParams{
-		QuestionText: req.QuestionText,
+		QuestionText: te.QuestionText,
 		AnswerID:     req.AnswerID,
 		QuestionID:   req.ID,
 	}
 	fmt.Printf("arg: %v", arg)
 
-	err := server.store.UpdateQuestion(ctx, arg)
+	err = server.store.UpdateQuestion(ctx, arg)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

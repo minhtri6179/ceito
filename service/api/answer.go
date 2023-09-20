@@ -10,7 +10,7 @@ import (
 
 type createAnswerRequest struct {
 	QuestionID pgtype.Int4 `json:"question_id" binding:"required,number"`
-	AnswerText pgtype.Text `json:"answer_text" binding:"required,number"`
+	AnswerText pgtype.Text `json:"answer_text " binding:"required"`
 	IsCorrect  pgtype.Bool `json:"is_correct"`
 }
 

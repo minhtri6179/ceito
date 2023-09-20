@@ -19,7 +19,7 @@ func (server *Server) submitAnswer(ctx *gin.Context) {
 		return
 	}
 
-	result, err := server.checkQuestion(ctx, req.QuestionID, req.AnswerID)
+	result, err := server.checkQuestion(ctx, req.QuestionID)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
@@ -27,19 +27,19 @@ func (server *Server) submitAnswer(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, result)
 }
-func (server *Server) checkQuestion(ctx *gin.Context, questionID int64, answerID int64) (bool, error) {
+func (server *Server) checkQuestion(ctx *gin.Context, questionID int64) (bool, error) {
 	question, err := server.store.GetQuestion(ctx, questionID)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return false, err
 	}
-	isTrue, err := server.store.GetAnswer(ctx, answerID)
+	isTrue, err := server.store.GetAnswer(ctx, question.QuestionID)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return false, err
 	}
 
-	if isTrue.IsCorrect.Bool && int64(question.AnswerID.Int32) == answerID {
+	if isTrue.IsCorrect.Bool {
 		fmt.Printf("Correct question")
 		return true, nil
 	}

@@ -14,33 +14,25 @@ import (
 const createQuestion = `-- name: CreateQuestion :one
 INSERT INTO question (
         question_text,
-        answer_id,
         test_name,
         created_at
     )
-VALUES ($1, $2, $3, $4)
-RETURNING question_id, question_text, answer_id, test_name, created_at, update_at
+VALUES ($1, $2, $3)
+RETURNING question_id, question_text, test_name, created_at, update_at
 `
 
 type CreateQuestionParams struct {
 	QuestionText pgtype.Text        `json:"question_text"`
-	AnswerID     pgtype.Int4        `json:"answer_id"`
 	TestName     pgtype.Text        `json:"test_name"`
 	CreatedAt    pgtype.Timestamptz `json:"created_at"`
 }
 
 func (q *Queries) CreateQuestion(ctx context.Context, arg CreateQuestionParams) (Question, error) {
-	row := q.db.QueryRow(ctx, createQuestion,
-		arg.QuestionText,
-		arg.AnswerID,
-		arg.TestName,
-		arg.CreatedAt,
-	)
+	row := q.db.QueryRow(ctx, createQuestion, arg.QuestionText, arg.TestName, arg.CreatedAt)
 	var i Question
 	err := row.Scan(
 		&i.QuestionID,
 		&i.QuestionText,
-		&i.AnswerID,
 		&i.TestName,
 		&i.CreatedAt,
 		&i.UpdateAt,
@@ -59,7 +51,7 @@ func (q *Queries) DeleteQuestion(ctx context.Context, questionID int64) error {
 }
 
 const getQuestion = `-- name: GetQuestion :one
-SELECT question_id, question_text, answer_id, test_name, created_at, update_at
+SELECT question_id, question_text, test_name, created_at, update_at
 FROM question
 WHERE question_id = $1
 `
@@ -70,7 +62,6 @@ func (q *Queries) GetQuestion(ctx context.Context, questionID int64) (Question, 
 	err := row.Scan(
 		&i.QuestionID,
 		&i.QuestionText,
-		&i.AnswerID,
 		&i.TestName,
 		&i.CreatedAt,
 		&i.UpdateAt,
@@ -79,7 +70,7 @@ func (q *Queries) GetQuestion(ctx context.Context, questionID int64) (Question, 
 }
 
 const listQuestions = `-- name: ListQuestions :many
-SELECT question_id, question_text, answer_id, test_name, created_at, update_at
+SELECT question_id, question_text, test_name, created_at, update_at
 FROM question
 ORDER BY question_id
 LIMIT $1 OFFSET $2
@@ -102,7 +93,6 @@ func (q *Queries) ListQuestions(ctx context.Context, arg ListQuestionsParams) ([
 		if err := rows.Scan(
 			&i.QuestionID,
 			&i.QuestionText,
-			&i.AnswerID,
 			&i.TestName,
 			&i.CreatedAt,
 			&i.UpdateAt,
@@ -120,24 +110,17 @@ func (q *Queries) ListQuestions(ctx context.Context, arg ListQuestionsParams) ([
 const updateQuestion = `-- name: UpdateQuestion :exec
 UPDATE question
 SET question_text = $1,
-    answer_id = $2,
-    test_name = $3
-WHERE question_id = $4
+    test_name = $2
+WHERE question_id = $3
 `
 
 type UpdateQuestionParams struct {
 	QuestionText pgtype.Text `json:"question_text"`
-	AnswerID     pgtype.Int4 `json:"answer_id"`
 	TestName     pgtype.Text `json:"test_name"`
 	QuestionID   int64       `json:"question_id"`
 }
 
 func (q *Queries) UpdateQuestion(ctx context.Context, arg UpdateQuestionParams) error {
-	_, err := q.db.Exec(ctx, updateQuestion,
-		arg.QuestionText,
-		arg.AnswerID,
-		arg.TestName,
-		arg.QuestionID,
-	)
+	_, err := q.db.Exec(ctx, updateQuestion, arg.QuestionText, arg.TestName, arg.QuestionID)
 	return err
 }

@@ -24,7 +24,6 @@ func (server *Server) createQuestion(ctx *gin.Context) {
 
 	arg := db.CreateQuestionParams{
 		QuestionText: req.QuestionText,
-		AnswerID:     req.AnswerID,
 		TestName:     req.TestName,
 	}
 	user, err := server.store.CreateQuestion(ctx, arg)
@@ -61,7 +60,6 @@ func (server *Server) updateQuestion(ctx *gin.Context) {
 
 	arg := db.UpdateQuestionParams{
 		QuestionText: te.QuestionText,
-		AnswerID:     req.AnswerID,
 		QuestionID:   req.ID,
 	}
 	fmt.Printf("arg: %v", arg)

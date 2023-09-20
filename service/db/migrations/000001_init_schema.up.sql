@@ -7,7 +7,6 @@ CREATE TABLE "accounts" (
 CREATE TABLE "question" (
     "question_id" bigserial PRIMARY KEY,
     "question_text" text,
-    "answer_id" integer,
     "test_name" varchar,
     "created_at" timestamptz DEFAULT (now()),
     "update_at" timestamp

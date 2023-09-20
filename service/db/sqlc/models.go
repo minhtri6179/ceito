@@ -29,7 +29,6 @@ type Answer struct {
 type Question struct {
 	QuestionID   int64              `json:"question_id"`
 	QuestionText pgtype.Text        `json:"question_text"`
-	AnswerID     pgtype.Int4        `json:"answer_id"`
 	TestName     pgtype.Text        `json:"test_name"`
 	CreatedAt    pgtype.Timestamptz `json:"created_at"`
 	UpdateAt     pgtype.Timestamp   `json:"update_at"`

@@ -1,11 +1,10 @@
 -- name: CreateQuestion :one
 INSERT INTO question (
         question_text,
-        answer_id,
         test_name,
         created_at
     )
-VALUES ($1, $2, $3, $4)
+VALUES ($1, $2, $3)
 RETURNING *;
 -- name: GetQuestion :one
 SELECT *
@@ -19,9 +18,8 @@ LIMIT $1 OFFSET $2;
 -- name: UpdateQuestion :exec
 UPDATE question
 SET question_text = $1,
-    answer_id = $2,
-    test_name = $3
-WHERE question_id = $4;
+    test_name = $2
+WHERE question_id = $3;
 -- name: DeleteQuestion :exec
 DELETE FROM question
 WHERE question_id = $1;

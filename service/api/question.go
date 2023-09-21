@@ -72,3 +72,27 @@ func (server *Server) updateQuestion(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, "Update question successfully")
 
 }
+
+type listQuestionsRequest struct {
+	Limit  int32 `json:"limit"`
+	Offset int32 `json:"offset"`
+}
+
+func (server *Server) listQuestions(ctx *gin.Context) {
+	var req listQuestionsRequest
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, errorResponse(err))
+		return
+	}
+
+	arg := db.ListQuestionsParams{
+		Limit:  req.Limit,
+		Offset: req.Offset,
+	}
+	questions, err := server.store.ListQuestions(ctx, arg)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+	ctx.JSON(http.StatusOK, questions)
+}

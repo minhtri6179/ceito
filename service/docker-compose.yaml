@@ -1,0 +1,19 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:12-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: postgres
+  api:
+    build:
+      context: .
+      dockerfile: 3Dockerfile
+    restart: always
+    ports:
+      - 8080:8080
+
+    environment:
+      DATABASE_URL: postgresql://root:secret@postgres:5432/toeic?sslmode=disable

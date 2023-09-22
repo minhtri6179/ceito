@@ -11,6 +11,9 @@ type submitRequest struct {
 	QuestionID []int64 `json:"question_id" `
 	AnswerID   []int64 `json:"answer_id" `
 }
+type submitResponse struct {
+	Mark int `json:"your_score"`
+}
 
 func (server *Server) submitAnswer(ctx *gin.Context) {
 	var req submitRequest
@@ -18,23 +21,30 @@ func (server *Server) submitAnswer(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
 		return
 	}
-	// if len(req.QuestionID) != len(req.AnswerID) {
-	// 	ctx.JSON(http.StatusBadRequest, errorResponse(err))
-	// 	return
-	// }
-
-	// for i := 0; i < len(req.QuestionID); i++ {
-	// 	server.checkQuestion(ctx, req.QuestionID[i], req.AnswerID[i])
-	// }
-	res, err := server.checkQuestion(ctx, req.QuestionID[0], req.AnswerID[0])
+	maring := 0
+	for i, q := range req.QuestionID {
+		res, err := server.checkQuestion(ctx, q, req.AnswerID[i])
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, errorResponse(err))
+			return
+		}
+		if res {
+			maring++
+		}
+	}
+	var res submitResponse
+	var err error
+	res.Mark, err = server.numofTrue2scoreListing(ctx, maring)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
 		return
 	}
-	fmt.Print(res)
 
-	ctx.JSON(http.StatusOK, true)
+	fmt.Print(maring)
+
+	ctx.JSON(http.StatusOK, res)
 }
+
 func (server *Server) checkQuestion(ctx *gin.Context, questionID int64, answerID int64) (bool, error) {
 	answer, err := server.store.GetAnswer(ctx, answerID)
 	if err != nil {
@@ -51,4 +61,21 @@ func (server *Server) checkQuestion(ctx *gin.Context, questionID int64, answerID
 	}
 
 	return false, nil
+}
+func makeListeningScore(min, max int) []int {
+	a := make([]int, max-min+1)
+	for i := range a {
+		a[i] = min + i*5 + 10
+	}
+	a[0] = 0
+	var s []int = a[97:]
+	for i := 0; i < len(s); i++ {
+		s[i] = 495
+	}
+	return a
+}
+
+func (server *Server) numofTrue2scoreListing(ctx *gin.Context, numofTrue int) (int, error) {
+	mapping := makeListeningScore(0, 100)
+	return mapping[numofTrue], nil
 }

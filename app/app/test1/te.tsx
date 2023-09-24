@@ -7,6 +7,7 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import ImageGallery from "../components/ImageGallery";
 import ListeningQuestion from "../components/ListeningQuestion2";
+import ListeningQuestionTest34 from "../components/ListeningQuestion3_4"
 export default function LabTabs() {
   const [value, setValue] = React.useState('1');
 
@@ -30,8 +31,8 @@ export default function LabTabs() {
         </Box>
         <TabPanel value="1"><ImageGallery /></TabPanel>
         <TabPanel value="2"><ListeningQuestion index={6} numofQuestion={25} /></TabPanel>
-        <TabPanel value="3"><ListeningQuestion index={31} numofQuestion={39} /></TabPanel>
-        <TabPanel value="4"><ListeningQuestion index={70} numofQuestion={30} /></TabPanel>
+        <TabPanel value="3"><ListeningQuestionTest34 index={31} numofQuestion={39} /></TabPanel>
+        <TabPanel value="4"><ListeningQuestionTest34 index={70} numofQuestion={30} /></TabPanel>
         <TabPanel value="5"><ListeningQuestion index={5} numofQuestion={10} /></TabPanel>
         <TabPanel value="6"><ListeningQuestion index={5} numofQuestion={10} /></TabPanel>
         <TabPanel value="7"><ListeningQuestion index={5} numofQuestion={10} /></TabPanel>

@@ -86,8 +86,8 @@ func (server *Server) listQuestions(ctx *gin.Context) {
 	}
 
 	arg := db.ListQuestionsParams{
-		Limit:  req.Limit,
-		Offset: req.Offset,
+		Limit:  100,
+		Offset: 0,
 	}
 	questions, err := server.store.ListQuestions(ctx, arg)
 	if err != nil {

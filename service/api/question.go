@@ -74,13 +74,12 @@ func (server *Server) updateQuestion(ctx *gin.Context) {
 }
 
 type listQuestionsRequest struct {
-	Limit  int32 `json:"limit"`
-	Offset int32 `json:"offset"`
+	TestName pgtype.Text `json:"test_name"`
 }
 
 func (server *Server) listQuestions(ctx *gin.Context) {
 	var req listQuestionsRequest
-	if err := ctx.ShouldBindJSON(&req); err != nil {
+	if err := ctx.ShouldBindQuery(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
 		return
 	}

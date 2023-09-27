@@ -3,7 +3,6 @@ package api
 import (
 	"fmt"
 
-	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	db "github.com/minhtri6179/service/db/sqlc"
 	"github.com/minhtri6179/service/token"
@@ -37,12 +36,7 @@ func NewServer(config util.Config, store db.Store) (*Server, error) {
 
 func (server *Server) setupRouter() {
 	router := gin.Default()
-	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:3000/"},
-		AllowMethods:     []string{"POST", "PUT", "PATCH", "DELETE", "GET", "OPTIONS"},
-		AllowCredentials: true,
-		AllowHeaders:     []string{"Content-Type,access-control-allow-origin, access-control-allow-headers"},
-	}))
+
 	router.POST("/users", server.createUser)
 	router.POST("/users/login", server.loginUser)
 	// Question
@@ -66,8 +60,6 @@ func (server *Server) setupRouter() {
 	authRoutes.GET("/accounts", server.listAccounts)
 
 	server.router = router
-	router.Run()
-
 }
 
 // Start runs the HTTP server on a specific address.

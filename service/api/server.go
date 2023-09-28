@@ -57,6 +57,7 @@ func (server *Server) setupRouter() {
 	// Answer
 	router.POST("/answers", server.createAnswer)
 	router.PUT("/answers/:id", server.updateAnswer)
+	router.GET("/answers", server.listAnswers)
 	// Score
 	router.POST("/scores", server.createScore)
 	router.PUT("/scores/:id", server.updateScore)

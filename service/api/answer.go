@@ -69,3 +69,26 @@ func (server *Server) updateAnswer(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, "Update question successfully")
 
 }
+
+type listAnswerRequest struct {
+	TestName pgtype.Text `json:"test_name"`
+}
+
+func (server *Server) listAnswers(ctx *gin.Context) {
+	var req listAnswerRequest
+	if err := ctx.ShouldBindQuery(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, errorResponse(err))
+		return
+	}
+
+	arg := db.ListAnswersParams{
+		Limit:  400,
+		Offset: 0,
+	}
+	answers, err := server.store.ListAnswers(ctx, arg)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+	ctx.JSON(http.StatusOK, answers)
+}

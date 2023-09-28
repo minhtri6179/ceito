@@ -73,7 +73,24 @@ func (server *Server) updateAnswer(ctx *gin.Context) {
 type listAnswerRequest struct {
 	TestName pgtype.Text `json:"test_name"`
 }
+type listAnswersResponse struct {
+	QuestionID pgtype.Int4 `json:"question_id"`
+	AnswerText pgtype.Text `json:"answer_text"`
+	AnswerID   int64       `json:"answer_id"`
+}
 
+func newlistAnswersResponse(answers []db.Answer) []listAnswersResponse {
+	res := make([]listAnswersResponse, len(answers))
+	for i, answer := range answers {
+		res[i] = listAnswersResponse{
+			QuestionID: answer.QuestionID,
+			AnswerText: answer.AnswerText,
+			AnswerID:   answer.AnswerID,
+		}
+	}
+
+	return res
+}
 func (server *Server) listAnswers(ctx *gin.Context) {
 	var req listAnswerRequest
 	if err := ctx.ShouldBindQuery(&req); err != nil {
@@ -90,5 +107,6 @@ func (server *Server) listAnswers(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
 	}
-	ctx.JSON(http.StatusOK, answers)
+	res := newlistAnswersResponse(answers)
+	ctx.JSON(http.StatusOK, res)
 }

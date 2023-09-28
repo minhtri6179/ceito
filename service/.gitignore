@@ -1,2 +1,5 @@
 app.env
 *.csv
+
+go.sum
+go.mod

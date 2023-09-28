@@ -2,6 +2,9 @@ package api
 
 import (
 	"fmt"
+	"time"
+
+	"github.com/gin-contrib/cors"
 
 	"github.com/gin-gonic/gin"
 	db "github.com/minhtri6179/service/db/sqlc"
@@ -36,6 +39,14 @@ func NewServer(config util.Config, store db.Store) (*Server, error) {
 
 func (server *Server) setupRouter() {
 	router := gin.Default()
+	router.Use(cors.New(cors.Config{
+		AllowOrigins: []string{"*"},
+		AllowMethods: []string{"PUT", "PATCH", "POST", "GET", "DELETE", "OPTIONS"},
+		AllowHeaders: []string{"X-Requested-With", "Content-Type", "Authorization"},
+		MaxAge:       12 * time.Hour,
+	}))
+
+	router.Use(cors.Default())
 
 	router.POST("/users", server.createUser)
 	router.POST("/users/login", server.loginUser)

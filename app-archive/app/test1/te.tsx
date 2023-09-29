@@ -4,10 +4,13 @@ import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
+import Button from '@mui/material/Button';
 import TabPanel from '@mui/lab/TabPanel';
 import ImageGallery from "../components/ImageGallery";
 import ListeningQuestion from "../components/ListeningQuestion2";
 import ListeningQuestionTest34 from "../components/ListeningQuestion3_4"
+import PublishIcon from '@mui/icons-material/Publish';
+import SubmitButton from "../components/Submit";
 export default function LabTabs() {
   const [value, setValue] = React.useState('1');
 
@@ -17,6 +20,7 @@ export default function LabTabs() {
 
   return (
     <Box sx={{ width: '100%', typography: 'body1' }}>
+      
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <TabList onChange={handleChange} aria-label="lab API tabs example">
@@ -36,7 +40,20 @@ export default function LabTabs() {
         <TabPanel value="5"><ListeningQuestion index={5} numofQuestion={10} /></TabPanel>
         <TabPanel value="6"><ListeningQuestion index={5} numofQuestion={10} /></TabPanel>
         <TabPanel value="7"><ListeningQuestion index={5} numofQuestion={10} /></TabPanel>
+        <Button
+          component="label"
+          variant="contained"
+          startIcon={<PublishIcon />}
+          style={{
+            position: 'fixed',
+            right: '40%', // Adjust this value to control the button's distance from the right edge
+            bottom: '50%', // Adjust this value to control the button's distance from the bottom
+          }}
+        >
+          <SubmitButton />
+        </Button>
       </TabContext>
+      
     </Box>
   );
 }

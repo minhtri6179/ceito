@@ -1,5 +1,5 @@
 // pages/ImageGallery.tsx
-import React from "react";
+import React, { useState, useEffect } from "react";
 import QuestionsPart2 from "./Question"
 interface ImageGalleryProps {
   index: number; // Receive the index prop

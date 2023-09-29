@@ -1,12 +1,14 @@
 // pages/ImageGallery.js
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+
 import {
   FormControl,
   FormControlLabel,
   FormLabel,
   RadioGroup,
   Radio,
+  Button,
 } from "@mui/material";
 
 const ImageGallery = () => {
@@ -24,20 +26,38 @@ const ImageGallery = () => {
     "q6.png",
     // Add more images as needed...
   ];
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const handleImageChange = (index: number) => {
-    setSelectedImageIndex(index);
+
+  const [selectedAnswers, setSelectedAnswers] = useState(() => {
+    const storedAnswers = localStorage.getItem("selectedAnswers");
+    return storedAnswers ? JSON.parse(storedAnswers) : Array(imageFiles.length).fill("");
+  });
+
+  const handleAnswerChange = (index: number, value: string) => {
+    const updatedAnswers = [...selectedAnswers];
+    updatedAnswers[index] = value;
+    setSelectedAnswers(updatedAnswers);
   };
+
+  useEffect(() => {
+    localStorage.setItem("selectedAnswers", JSON.stringify(selectedAnswers));
+  }, [selectedAnswers]);
+
+
 
   return (
     <div>
       {imageFiles.map((imageFile, index: number) => (
         <div key={index}>
           <FormControl>
-            <FormLabel id="qus-ans-ansersheet">Question {index + 1}</FormLabel>
+            <FormLabel id={`qus-ans-ansersheet-${index}`}>
+              Question {index + 1}
+            </FormLabel>
             <RadioGroup
-              aria-labelledby="demo-radio-buttons-group-label"
-              name="ansersheet">
+              aria-labelledby={`demo-radio-buttons-group-label-${index}`}
+              name={`ansersheet-${index}`}
+              value={selectedAnswers[index]}
+              onChange={(e) => handleAnswerChange(index, e.target.value)}
+            >
               <FormControlLabel value="A" control={<Radio />} label="A" />
               <FormControlLabel value="B" control={<Radio />} label="B" />
               <FormControlLabel value="C" control={<Radio />} label="C" />
@@ -55,6 +75,7 @@ const ImageGallery = () => {
           />
         </div>
       ))}
+
     </div>
   );
 };

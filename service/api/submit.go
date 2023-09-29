@@ -46,6 +46,9 @@ func (server *Server) submitAnswer(ctx *gin.Context) {
 }
 
 func (server *Server) checkQuestion(ctx *gin.Context, questionID int64, answerID int64) (bool, error) {
+	if answerID == 0 {
+		return false, nil
+	}
 	answer, err := server.store.GetAnswer(ctx, answerID)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))

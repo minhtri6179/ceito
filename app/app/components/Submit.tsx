@@ -18,7 +18,7 @@ const SubmitButton = () => {
     <div>
       <button onClick={handleClick}><strong>Nộp bài thôi </strong></button>
       <div>
-        <strong>Kết quả nè:</strong> {result}
+        <strong>Kết quả:</strong> {result}
       </div>
     </div>
   );

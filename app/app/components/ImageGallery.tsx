@@ -28,8 +28,11 @@ const ImageGallery = () => {
   ];
 
   const [selectedAnswers, setSelectedAnswers] = useState(() => {
+    if (typeof window !== 'undefined') {
+
     const storedAnswers = localStorage.getItem("selectedAnswers");
     return storedAnswers ? JSON.parse(storedAnswers) : Array(imageFiles.length).fill("");
+    }
   });
 
   const handleAnswerChange = (index: number, value: string) => {
@@ -55,7 +58,7 @@ const ImageGallery = () => {
             <RadioGroup
               aria-labelledby={`demo-radio-buttons-group-label-${index}`}
               name={`ansersheet-${index}`}
-              value={selectedAnswers[index]}
+              value={selectedAnswers ? selectedAnswers[index] : ""}
               onChange={(e) => handleAnswerChange(index, e.target.value)}
             >
               <FormControlLabel value="A" control={<Radio />} label="A" />

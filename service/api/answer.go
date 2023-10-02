@@ -9,7 +9,7 @@ import (
 )
 
 type createAnswerRequest struct {
-	QuestionID pgtype.Int4 `json:"question_id" binding:"required,number"`
+	QuestionID pgtype.Int4 `json:"question_id" binding:"required"`
 	AnswerText pgtype.Text `json:"answer_text" binding:"required"`
 	IsCorrect  pgtype.Bool `json:"is_correct"`
 }
@@ -26,12 +26,12 @@ func (server *Server) createAnswer(ctx *gin.Context) {
 		AnswerText: req.AnswerText,
 		IsCorrect:  req.IsCorrect,
 	}
-	user, err := server.store.CreateAnswer(ctx, arg)
+	ans, err := server.store.CreateAnswer(ctx, arg)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	ctx.JSON(http.StatusOK, user)
+	ctx.JSON(http.StatusOK, ans)
 
 }
 

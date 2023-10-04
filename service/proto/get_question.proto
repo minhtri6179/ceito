@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package db;
+
+option go_package = "github.com/minhtri6179/service/pb";
+
+message GetQuestionRequest {
+    string QuestionText = 1;
+    string TestName = 2;
+}
+
+message GetQuestionResponse {
+    string QuestionText = 1;
+    string TestName = 2;
+}

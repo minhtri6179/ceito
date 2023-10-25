@@ -46,8 +46,8 @@ export default function LabTabs() {
           startIcon={<PublishIcon />}
           style={{
             position: 'fixed',
-            right: '40%', // Adjust this value to control the button's distance from the right edge
-            bottom: '50%', // Adjust this value to control the button's distance from the bottom
+            right: '20%', // Adjust this value to control the button's distance from the right edge
+            bottom: '70%', // Adjust this value to control the button's distance from the bottom
           }}
         >
           <SubmitButton />

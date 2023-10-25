@@ -19,6 +19,6 @@ sqlc:
 	sqlc generate
 
 createdata:
-	python3 scripts/create_db.py
+	cd scripts && python3 create_db.py
 
 .PHONY: postgres createdb dropdb migrateup migratedown sqlc createdata

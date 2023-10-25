@@ -35,16 +35,16 @@ type Question struct {
 }
 
 type Score struct {
-	ScoreID        int64       `json:"score_id"`
-	TestID         pgtype.Int4 `json:"test_id"`
+	ID             int64       `json:"id"`
 	ReadingScore   pgtype.Int4 `json:"reading_score"`
 	ListeningScore pgtype.Int4 `json:"listening_score"`
 	TotalScore     pgtype.Int4 `json:"total_score"`
 }
 
-type Test struct {
+type TestResult struct {
 	TestID    int64              `json:"test_id"`
 	Username  pgtype.Text        `json:"username"`
+	ScoreID   pgtype.Int4        `json:"score_id"`
 	CreatedAt pgtype.Timestamptz `json:"created_at"`
 	UpdateAt  pgtype.Timestamp   `json:"update_at"`
 }

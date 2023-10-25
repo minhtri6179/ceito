@@ -24,7 +24,6 @@ func (server *Server) createScore(ctx *gin.Context) {
 	}
 
 	arg := db.CreateScoreParams{
-		TestID:         req.TestID,
 		ReadingScore:   req.ReadingScore,
 		ListeningScore: req.ListeningScore,
 		TotalScore:     req.TotalScore,
@@ -40,7 +39,6 @@ func (server *Server) createScore(ctx *gin.Context) {
 
 type updateScoreRequest struct {
 	ScoreID        int64       `uri:"id"`
-	TestID         pgtype.Int4 `json:"test_id" validate:"required"`
 	ReadingScore   pgtype.Int4 `json:"reading_score"`
 	TotalScore     pgtype.Int4 `json:"total_score"`
 	ListeningScore pgtype.Int4 `json:"listening_score"`
@@ -59,8 +57,7 @@ func (server *Server) updateScore(ctx *gin.Context) {
 	}
 
 	arg := db.UpdateScoreParams{
-		ScoreID:        req.ScoreID,
-		TestID:         req.TestID,
+		ID:             req.ScoreID,
 		ReadingScore:   req.ReadingScore,
 		ListeningScore: req.ListeningScore,
 		TotalScore:     req.TotalScore,

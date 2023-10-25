@@ -18,4 +18,7 @@ migratedown:
 sqlc:
 	sqlc generate
 
-.PHONY: postgres createdb dropdb migrateup migratedown sqlc
+createdata:
+	python3 scripts/create_db.py
+
+.PHONY: postgres createdb dropdb migrateup migratedown sqlc createdata

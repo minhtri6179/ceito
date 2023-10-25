@@ -1,1 +1,3 @@
 .vscode
+/app/.eslintrc.json
+/app/package-lock.json

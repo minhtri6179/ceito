@@ -5,6 +5,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jackc/pgx/v5/pgtype"
+	db "github.com/minhtri6179/service/db/sqlc"
 )
 
 type submitRequest struct {
@@ -13,6 +15,11 @@ type submitRequest struct {
 }
 type submitResponse struct {
 	Mark int `json:"your_score"`
+}
+type updateScoreReq struct {
+	ReadingScore   pgtype.Int4 `json:"reading_score" `
+	ListeningScore pgtype.Int4 `json:"listening_score" `
+	TotalScore     pgtype.Int4 `json:"total_score" `
 }
 
 func (server *Server) submitAnswer(ctx *gin.Context) {
@@ -39,8 +46,25 @@ func (server *Server) submitAnswer(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
 		return
 	}
-
-	fmt.Print(maring)
+	// Update score to database
+	var socrereq updateScoreReq
+	socrereq.ReadingScore.Valid = true
+	socrereq.ReadingScore.Int32 = 0
+	socrereq.ListeningScore.Valid = true
+	socrereq.ListeningScore.Int32 = 0
+	socrereq.TotalScore.Valid = true
+	socrereq.TotalScore.Int32 = int32(res.Mark)
+	arg := db.CreateScoreParams{
+		ReadingScore:   socrereq.ReadingScore,
+		ListeningScore: socrereq.ListeningScore,
+		TotalScore:     socrereq.TotalScore,
+	}
+	score, err := server.store.CreateScore(ctx, arg)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+	fmt.Println(score)
 
 	ctx.JSON(http.StatusOK, res)
 }

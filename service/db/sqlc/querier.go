@@ -29,6 +29,7 @@ type Querier interface {
 	GetQuestion(ctx context.Context, questionID int64) (Question, error)
 	GetScore(ctx context.Context, id int64) (Score, error)
 	GetTest(ctx context.Context, testID int64) (TestResult, error)
+	GetTestQuestions(ctx context.Context, testName pgtype.Text) ([]Question, error)
 	GetUser(ctx context.Context, username string) (User, error)
 	ListAccounts(ctx context.Context, arg ListAccountsParams) ([]Account, error)
 	ListAnswers(ctx context.Context, arg ListAnswersParams) ([]Answer, error)

@@ -74,21 +74,20 @@ func (server *Server) updateQuestion(ctx *gin.Context) {
 }
 
 type listQuestionsRequest struct {
-	TestName pgtype.Text `json:"test_name"`
+	TestName string `uri:"name"`
 }
 
 func (server *Server) listQuestions(ctx *gin.Context) {
 	var req listQuestionsRequest
-	if err := ctx.ShouldBindQuery(&req); err != nil {
+	if err := ctx.ShouldBindUri(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
 		return
 	}
+	textValue := pgtype.Text{}
+	textValue.String = req.TestName
+	textValue.Valid = true
 
-	arg := db.ListQuestionsParams{
-		Limit:  100,
-		Offset: 0,
-	}
-	questions, err := server.store.ListQuestions(ctx, arg)
+	questions, err := server.store.GetTestQuestions(ctx, textValue)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return

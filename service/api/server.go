@@ -53,7 +53,7 @@ func (server *Server) setupRouter() {
 	// Question
 	router.POST("/questions", server.createQuestion)
 	router.PUT("/questions/:id", server.updateQuestion)
-	router.GET("/questions", server.listQuestions)
+	router.GET("/questions/:name", server.listQuestions)
 	// Answer
 	router.POST("/answers", server.createAnswer)
 	router.PUT("/answers/:id", server.updateAnswer)

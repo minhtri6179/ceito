@@ -23,3 +23,8 @@ WHERE question_id = $3;
 -- name: DeleteQuestion :exec
 DELETE FROM question
 WHERE question_id = $1;
+-- name: GetTestQuestions :many
+SELECT *
+FROM question
+WHERE test_name = $1
+ORDER BY question_id;

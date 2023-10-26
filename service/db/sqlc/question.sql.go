@@ -69,6 +69,39 @@ func (q *Queries) GetQuestion(ctx context.Context, questionID int64) (Question, 
 	return i, err
 }
 
+const getTestQuestions = `-- name: GetTestQuestions :many
+SELECT question_id, question_text, test_name, created_at, update_at
+FROM question
+WHERE test_name = $1
+ORDER BY question_id
+`
+
+func (q *Queries) GetTestQuestions(ctx context.Context, testName pgtype.Text) ([]Question, error) {
+	rows, err := q.db.Query(ctx, getTestQuestions, testName)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Question{}
+	for rows.Next() {
+		var i Question
+		if err := rows.Scan(
+			&i.QuestionID,
+			&i.QuestionText,
+			&i.TestName,
+			&i.CreatedAt,
+			&i.UpdateAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const listQuestions = `-- name: ListQuestions :many
 SELECT question_id, question_text, test_name, created_at, update_at
 FROM question

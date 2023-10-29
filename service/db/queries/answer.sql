@@ -20,3 +20,8 @@ WHERE answer_id = $4;
 -- name: DeleteAnswer :exec
 DELETE FROM answer
 WHERE answer_id = $1;
+-- name: GetAnswerPart :many
+SELECT *
+FROM answer
+WHERE question_id = $1
+ORDER BY answer_id;

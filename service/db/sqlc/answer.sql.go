@@ -67,6 +67,40 @@ func (q *Queries) GetAnswer(ctx context.Context, answerID int64) (Answer, error)
 	return i, err
 }
 
+const getAnswerPart = `-- name: GetAnswerPart :many
+SELECT answer_id, question_id, answer_text, is_correct, created_at, update_at
+FROM answer
+WHERE question_id = $1
+ORDER BY answer_id
+`
+
+func (q *Queries) GetAnswerPart(ctx context.Context, questionID pgtype.Int4) ([]Answer, error) {
+	rows, err := q.db.Query(ctx, getAnswerPart, questionID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Answer{}
+	for rows.Next() {
+		var i Answer
+		if err := rows.Scan(
+			&i.AnswerID,
+			&i.QuestionID,
+			&i.AnswerText,
+			&i.IsCorrect,
+			&i.CreatedAt,
+			&i.UpdateAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const listAnswers = `-- name: ListAnswers :many
 SELECT answer_id, question_id, answer_text, is_correct, created_at, update_at
 FROM answer

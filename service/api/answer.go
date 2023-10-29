@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5/pgtype"
 	db "github.com/minhtri6179/service/db/sqlc"
+	"github.com/minhtri6179/service/util"
 )
 
 type createAnswerRequest struct {
@@ -101,6 +102,38 @@ func (server *Server) listAnswers(ctx *gin.Context) {
 	arg := db.ListAnswersParams{
 		Limit:  400,
 		Offset: 0,
+	}
+	answers, err := server.store.ListAnswers(ctx, arg)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+	res := newlistAnswersResponse(answers)
+	ctx.JSON(http.StatusOK, res)
+}
+
+type listAnswerPartRequest struct {
+	TestPartName string `uri:"name"`
+}
+
+func (server *Server) getAnswerPart(ctx *gin.Context) {
+	var req listAnswerPartRequest
+	if err := ctx.ShouldBindUri(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, errorResponse(err))
+		return
+	}
+	textValue := pgtype.Text{}
+	textValue.String = req.TestPartName
+	textValue.Valid = true
+	offset, err := server.getFirstQuestionIDByName(ctx, req.TestPartName)
+	limit := util.LimitPerPart(req.TestPartName)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+	arg := db.ListAnswersParams{
+		Limit:  int32(limit),
+		Offset: int32(offset) - 1,
 	}
 	answers, err := server.store.ListAnswers(ctx, arg)
 	if err != nil {

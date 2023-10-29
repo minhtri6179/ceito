@@ -26,6 +26,7 @@ type Querier interface {
 	GetAccount(ctx context.Context, id int64) (Account, error)
 	GetAccountForUpdate(ctx context.Context, id int64) (Account, error)
 	GetAnswer(ctx context.Context, answerID int64) (Answer, error)
+	GetAnswerPart(ctx context.Context, questionID pgtype.Int4) ([]Answer, error)
 	GetQuestion(ctx context.Context, questionID int64) (Question, error)
 	GetScore(ctx context.Context, id int64) (Score, error)
 	GetTest(ctx context.Context, testID int64) (TestResult, error)

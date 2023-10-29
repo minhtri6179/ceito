@@ -94,3 +94,25 @@ func (server *Server) listQuestions(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, questions)
 }
+
+func (server *Server) getFirstQuestionIDByName(ctx *gin.Context, questionName string) (int64, error) {
+	textValue := pgtype.Text{}
+	textValue.String = questionName
+	textValue.Valid = true
+	questions, err := server.store.GetTestQuestions(ctx, textValue)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return 0, err
+	}
+	var pgInt4Value pgtype.Int4
+	pgInt4Value.Int32 = int32(questions[0].QuestionID)
+	pgInt4Value.Valid = true
+
+	ans, err := server.store.GetAnswerPart(ctx, pgInt4Value)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return 0, err
+	}
+	fmt.Printf("ans: %v", ans[0].AnswerID)
+	return ans[0].AnswerID, nil
+}

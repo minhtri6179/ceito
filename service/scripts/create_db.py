@@ -12,10 +12,25 @@ class CreateTestDB:
 
     def create_question(self, question_text_list, test_name):
         question_ids = []
+        part = "Part1"
+        cur = 0
         for idx, question in enumerate(question_text_list):
+            if idx == cur + 6:
+                part = "Part2"
+            if idx == cur + 6 + 25:
+                part = "Part3"
+            if idx == cur + 6 + 26 + 39:
+                part = "Part4"
+            if idx == cur + 6 + 26 + 39 + 30:
+                part = "Part5"
+            if idx == cur + 6 + 26 + 39 + 30 + 30:
+                part = "Part6"
+            if idx == cur + 6 + 26 + 39 + 30 + 30 + 29:
+                part = "Part7"
+
             myobj = {
                 "question_text": question,
-                "test_name": test_name,
+                "test_name": test_name + "-" + part,
             }
             x = requests.post(self.question, json=myobj)
             question_ids.append(x.json()["question_id"])
@@ -63,7 +78,7 @@ if __name__ == "__main__":
     test = CreateTestDB(
         "http://localhost:8080/questions/", "http://localhost:8080/answers/"
     )
-    test.create_question(question_text, "ETS-23-Test1-Part1")
+    test.create_question(question_text, "ETS-23-Test1")
     questions = test.get_questions()
 
     test.create_answer(answer_text, questions, answer_list)

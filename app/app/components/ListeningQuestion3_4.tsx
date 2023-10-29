@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import QuestionsPart2 from "./Question";
 import { get } from "http";
 
@@ -30,7 +30,7 @@ function getQuestions(name: string) {
     });
 }
 function getAnsers(name_part:string) {
-  const url = `http://localhost:8080/answers/${name_part}`;
+  const url = `http://localhost:8080/answers-part/${name_part}`;
   return fetch(url, {
     method: "GET",
   })
@@ -38,10 +38,9 @@ function getAnsers(name_part:string) {
     .then((data) => {
       const answers: AnswerData[] = [];
       //const slicedData = data.slice(from*4, to*4);
-      const slicedData = data.slice(0, 4);
-      for (let i = 0; i < slicedData.length; i+=4) {
+      for (let i = 0; i < data.length; i+=4) {
         answers.push({
-          options: [`A. ${slicedData[i].answer_text}`, `B. ${slicedData[i+1].answer_text}`, `C. ${slicedData[i+2].answer_text}`, `D. ${slicedData[i+3].answer_text}`],
+          options: [`A. ${data[i].answer_text}`, `B. ${data[i+1].answer_text}`, `C. ${data[i+2].answer_text}`, `D. ${data[i+3].answer_text}`],
         });
       }
       return answers;
@@ -54,7 +53,15 @@ const ListeningQuestionTest34: React.FC<ImageGalleryProps> = ({ name_part }) => 
   
   const [questions, setQuestions] = useState<QuestionData[]>([]);
   const [answers, setAnsers] = useState<AnswerData[]>([]);
-  
+  const lastCharacter = name_part.slice(-1);
+  let idx: number;
+  if (lastCharacter === "3") {
+    idx = 31
+
+  }
+  else {
+    idx = 70
+  }
   useEffect(() => {
     getQuestions(name_part)
       .then((data) => {
@@ -80,7 +87,7 @@ const ListeningQuestionTest34: React.FC<ImageGalleryProps> = ({ name_part }) => 
             key={questionIndex}
             question={questionData.question}
             options={answers[questionIndex]?.options || []}
-            index={index + questionIndex}
+            index={idx+questionIndex}
           />
         ))
       }

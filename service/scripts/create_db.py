@@ -19,13 +19,13 @@ class CreateTestDB:
                 part = "Part2"
             if idx == cur + 6 + 25:
                 part = "Part3"
-            if idx == cur + 6 + 26 + 39:
+            if idx == cur + 6 + 25 + 39:
                 part = "Part4"
-            if idx == cur + 6 + 26 + 39 + 30:
+            if idx == cur + 6 + 25 + 39 + 30:
                 part = "Part5"
-            if idx == cur + 6 + 26 + 39 + 30 + 30:
+            if idx == cur + 6 + 25 + 39 + 30 + 30:
                 part = "Part6"
-            if idx == cur + 6 + 26 + 39 + 30 + 30 + 29:
+            if idx == cur + 6 + 25 + 39 + 30 + 30 + 16:
                 part = "Part7"
 
             myobj = {

@@ -12,3 +12,8 @@ Lightweight web application for TOEIC testing.
 ![](https://github.com/minhtri6179/ceito/blob/main/listening.gif)
 
 ## How to Build
+
+- Start server: navigate to the service folder and follow steps inside.
+- Start UI: go to the app folder and build and start it.
+
+Thank for reading

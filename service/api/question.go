@@ -8,13 +8,14 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5/pgtype"
 	db "github.com/minhtri6179/service/db/sqlc"
+	"github.com/minhtri6179/service/util"
 )
 
 type createQuestionRequest struct {
-	QuestionText pgtype.Text       `json:"question_text"`
-	AnswerID     pgtype.Int4       `json:"answer_id"`
-	TestName     pgtype.Text       `json:"test_name"`
-	Image        pgtype.JSONBCodec `json:"image"`
+	QuestionText pgtype.Text `json:"question_text"`
+	AnswerID     pgtype.Int4 `json:"answer_id"`
+	TestName     pgtype.Text `json:"test_name"`
+	Image        *util.Image `json:"image"`
 }
 
 func (server *Server) createQuestion(ctx *gin.Context) {

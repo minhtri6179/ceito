@@ -48,6 +48,7 @@ type updateQuestionRequest struct {
 	QuestionText pgtype.Text `json:"question_text"`
 	AnswerID     pgtype.Int4 `json:"answer_id" binding:"required,number"`
 	ID           int64       `uri:"id"`
+	Image        *util.Image `json:"image"`
 }
 
 func (server *Server) updateQuestion(ctx *gin.Context) {

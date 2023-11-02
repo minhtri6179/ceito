@@ -8,6 +8,7 @@ CREATE TABLE "question" (
     "question_id" bigserial PRIMARY KEY,
     "question_text" text,
     "test_name" varchar,
+    "img" json,
     "created_at" timestamptz DEFAULT (now()),
     "update_at" timestamp
 );

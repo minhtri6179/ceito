@@ -30,6 +30,7 @@ type Question struct {
 	QuestionID   int64              `json:"question_id"`
 	QuestionText pgtype.Text        `json:"question_text"`
 	TestName     pgtype.Text        `json:"test_name"`
+	Img          []byte             `json:"img"`
 	CreatedAt    pgtype.Timestamptz `json:"created_at"`
 	UpdateAt     pgtype.Timestamp   `json:"update_at"`
 }

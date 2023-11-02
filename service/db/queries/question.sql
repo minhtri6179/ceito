@@ -2,9 +2,10 @@
 INSERT INTO question (
         question_text,
         test_name,
+        img,
         created_at
     )
-VALUES ($1, $2, $3)
+VALUES ($1, $2, $3, $4)
 RETURNING *;
 -- name: GetQuestion :one
 SELECT *

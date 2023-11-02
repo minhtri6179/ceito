@@ -1,6 +1,7 @@
 package api
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 
@@ -10,9 +11,10 @@ import (
 )
 
 type createQuestionRequest struct {
-	QuestionText pgtype.Text `json:"question_text"`
-	AnswerID     pgtype.Int4 `json:"answer_id"`
-	TestName     pgtype.Text `json:"test_name"`
+	QuestionText pgtype.Text       `json:"question_text"`
+	AnswerID     pgtype.Int4       `json:"answer_id"`
+	TestName     pgtype.Text       `json:"test_name"`
+	Image        pgtype.JSONBCodec `json:"image"`
 }
 
 func (server *Server) createQuestion(ctx *gin.Context) {
@@ -21,10 +23,16 @@ func (server *Server) createQuestion(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	jsonData, err := json.Marshal(req.Image)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 
 	arg := db.CreateQuestionParams{
 		QuestionText: req.QuestionText,
 		TestName:     req.TestName,
+		Img:          jsonData,
 	}
 	user, err := server.store.CreateQuestion(ctx, arg)
 	if err != nil {

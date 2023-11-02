@@ -15,25 +15,33 @@ const createQuestion = `-- name: CreateQuestion :one
 INSERT INTO question (
         question_text,
         test_name,
+        img,
         created_at
     )
-VALUES ($1, $2, $3)
-RETURNING question_id, question_text, test_name, created_at, update_at
+VALUES ($1, $2, $3, $4)
+RETURNING question_id, question_text, test_name, img, created_at, update_at
 `
 
 type CreateQuestionParams struct {
 	QuestionText pgtype.Text        `json:"question_text"`
 	TestName     pgtype.Text        `json:"test_name"`
+	Img          []byte             `json:"img"`
 	CreatedAt    pgtype.Timestamptz `json:"created_at"`
 }
 
 func (q *Queries) CreateQuestion(ctx context.Context, arg CreateQuestionParams) (Question, error) {
-	row := q.db.QueryRow(ctx, createQuestion, arg.QuestionText, arg.TestName, arg.CreatedAt)
+	row := q.db.QueryRow(ctx, createQuestion,
+		arg.QuestionText,
+		arg.TestName,
+		arg.Img,
+		arg.CreatedAt,
+	)
 	var i Question
 	err := row.Scan(
 		&i.QuestionID,
 		&i.QuestionText,
 		&i.TestName,
+		&i.Img,
 		&i.CreatedAt,
 		&i.UpdateAt,
 	)
@@ -51,7 +59,7 @@ func (q *Queries) DeleteQuestion(ctx context.Context, questionID int64) error {
 }
 
 const getQuestion = `-- name: GetQuestion :one
-SELECT question_id, question_text, test_name, created_at, update_at
+SELECT question_id, question_text, test_name, img, created_at, update_at
 FROM question
 WHERE question_id = $1
 `
@@ -63,6 +71,7 @@ func (q *Queries) GetQuestion(ctx context.Context, questionID int64) (Question, 
 		&i.QuestionID,
 		&i.QuestionText,
 		&i.TestName,
+		&i.Img,
 		&i.CreatedAt,
 		&i.UpdateAt,
 	)
@@ -70,7 +79,7 @@ func (q *Queries) GetQuestion(ctx context.Context, questionID int64) (Question, 
 }
 
 const getTestQuestions = `-- name: GetTestQuestions :many
-SELECT question_id, question_text, test_name, created_at, update_at
+SELECT question_id, question_text, test_name, img, created_at, update_at
 FROM question
 WHERE test_name = $1
 ORDER BY question_id
@@ -89,6 +98,7 @@ func (q *Queries) GetTestQuestions(ctx context.Context, testName pgtype.Text) ([
 			&i.QuestionID,
 			&i.QuestionText,
 			&i.TestName,
+			&i.Img,
 			&i.CreatedAt,
 			&i.UpdateAt,
 		); err != nil {
@@ -103,7 +113,7 @@ func (q *Queries) GetTestQuestions(ctx context.Context, testName pgtype.Text) ([
 }
 
 const listQuestions = `-- name: ListQuestions :many
-SELECT question_id, question_text, test_name, created_at, update_at
+SELECT question_id, question_text, test_name, img, created_at, update_at
 FROM question
 ORDER BY question_id
 LIMIT $1 OFFSET $2
@@ -127,6 +137,7 @@ func (q *Queries) ListQuestions(ctx context.Context, arg ListQuestionsParams) ([
 			&i.QuestionID,
 			&i.QuestionText,
 			&i.TestName,
+			&i.Img,
 			&i.CreatedAt,
 			&i.UpdateAt,
 		); err != nil {

@@ -20,6 +20,7 @@ def part6():
         rows = curlen // 5
         for i in range(rows):
             idx.append(curGroup[5 * i])
+            question.append("Question")
             for j in range(4):
                 if j != 0:
                     idx.append("")
@@ -30,6 +31,7 @@ def part6():
                 nu.append("")
     data = {
         "Question_id": idx,
+        "Question_text": question,
         "Test_name(ETS23-Test1)": nu,
         "Answer_id": nu,
         "Answer_text": answers,

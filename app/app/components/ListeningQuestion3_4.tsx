@@ -49,7 +49,7 @@ function getAnsers(name_part:string) {
     
 
 
-const ListeningQuestionTest34: React.FC<ImageGalleryProps> = ({ name_part }) => {
+const ListeningQuestionTest345: React.FC<ImageGalleryProps> = ({ name_part }) => {
   
   const [questions, setQuestions] = useState<QuestionData[]>([]);
   const [answers, setAnsers] = useState<AnswerData[]>([]);
@@ -59,8 +59,11 @@ const ListeningQuestionTest34: React.FC<ImageGalleryProps> = ({ name_part }) => 
     idx = 31
 
   }
-  else {
+  else if (lastCharacter === "4") {
     idx = 70
+  }
+  else {
+    idx = 100
   }
   useEffect(() => {
     getQuestions(name_part)
@@ -95,4 +98,4 @@ const ListeningQuestionTest34: React.FC<ImageGalleryProps> = ({ name_part }) => 
   );
 };
 
-export default ListeningQuestionTest34;
+export default ListeningQuestionTest345;

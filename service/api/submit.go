@@ -28,7 +28,8 @@ func (server *Server) submitAnswer(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
 		return
 	}
-	maring := 0
+	var listen_score, read_score int = 0, 0
+
 	for i, q := range req.QuestionID {
 		res, err := server.checkQuestion(ctx, q, req.AnswerID[i])
 		if err != nil {
@@ -36,12 +37,19 @@ func (server *Server) submitAnswer(ctx *gin.Context) {
 			return
 		}
 		if res {
-			maring++
+			if i < 100 {
+				listen_score += 1
+			} else {
+				read_score += 1
+			}
 		}
+
 	}
 	var res submitResponse
 	var err error
-	res.Mark, err = server.numofTrue2scoreListing(ctx, maring)
+	listen_score, err = server.numofTrue2scoreListing(ctx, listen_score)
+	read_score = server.numofTrue2scoreReading(ctx, read_score)
+
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
 		return
@@ -49,11 +57,12 @@ func (server *Server) submitAnswer(ctx *gin.Context) {
 	// Update score to database
 	var socrereq updateScoreReq
 	socrereq.ReadingScore.Valid = true
-	socrereq.ReadingScore.Int32 = 0
+	socrereq.ReadingScore.Int32 = int32(read_score)
 	socrereq.ListeningScore.Valid = true
-	socrereq.ListeningScore.Int32 = 0
+	socrereq.ListeningScore.Int32 = int32(listen_score)
 	socrereq.TotalScore.Valid = true
-	socrereq.TotalScore.Int32 = int32(res.Mark)
+	socrereq.TotalScore.Int32 = int32(read_score + listen_score)
+	res.Mark = int(socrereq.TotalScore.Int32)
 	arg := db.CreateScoreParams{
 		ReadingScore:   socrereq.ReadingScore,
 		ListeningScore: socrereq.ListeningScore,
@@ -100,6 +109,19 @@ func makeListeningScore(min, max int) []int {
 		s[i] = 495
 	}
 	return a
+}
+func (server *Server) numofTrue2scoreReading(ctx *gin.Context, numofTrue int) int {
+	var res int = 0
+	if numofTrue == 0 {
+		res = 0
+
+	} else if numofTrue == 1 {
+		res = 5
+	} else {
+		res = (numofTrue - 1) * 5
+	}
+	return res
+
 }
 
 func (server *Server) numofTrue2scoreListing(ctx *gin.Context, numofTrue int) (int, error) {

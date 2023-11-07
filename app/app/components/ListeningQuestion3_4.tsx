@@ -38,11 +38,19 @@ function getAnsers(name_part:string) {
     .then((data) => {
       const answers: AnswerData[] = [];
       //const slicedData = data.slice(from*4, to*4);
+      if (name_part === "ETS-23-Test1-Part5") {
+        for (let i = 0; i < data.length; i+=4) {
+          answers.push({
+            options: [`${data[i].answer_text}`, `${data[i+1].answer_text}`, `${data[i+2].answer_text}`, `${data[i+3].answer_text}`],
+          });
+        }
+      }
+      else {
       for (let i = 0; i < data.length; i+=4) {
         answers.push({
           options: [`A. ${data[i].answer_text}`, `B. ${data[i+1].answer_text}`, `C. ${data[i+2].answer_text}`, `D. ${data[i+3].answer_text}`],
         });
-      }
+      }}
       return answers;
     });
   }

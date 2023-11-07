@@ -29,7 +29,7 @@ func (server *Server) submitAnswer(ctx *gin.Context) {
 		return
 	}
 	var listen_score, read_score int = 0, 0
-
+	fmt.Println(len(req.QuestionID))
 	for i, q := range req.QuestionID {
 		res, err := server.checkQuestion(ctx, q, req.AnswerID[i])
 		if err != nil {

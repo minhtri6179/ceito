@@ -13,7 +13,6 @@ export default function Home() {
           Get started by editing&nbsp;
           <code className={styles.code}>app/page.tsx</code>
           
-
         </p>
         <Button variant="contained" onClick={() => router.push("/test1")}>TEST1</Button>
 

@@ -38,18 +38,26 @@ function getAnsers(name_part:string) {
     .then((data) => {
       const answers: AnswerData[] = [];
       //const slicedData = data.slice(from*4, to*4);
+      if (name_part === "ETS-23-Test1-Part5") {
+        for (let i = 0; i < data.length; i+=4) {
+          answers.push({
+            options: [`${data[i].answer_text}`, `${data[i+1].answer_text}`, `${data[i+2].answer_text}`, `${data[i+3].answer_text}`],
+          });
+        }
+      }
+      else {
       for (let i = 0; i < data.length; i+=4) {
         answers.push({
           options: [`A. ${data[i].answer_text}`, `B. ${data[i+1].answer_text}`, `C. ${data[i+2].answer_text}`, `D. ${data[i+3].answer_text}`],
         });
-      }
+      }}
       return answers;
     });
   }
     
 
 
-const ListeningQuestionTest34: React.FC<ImageGalleryProps> = ({ name_part }) => {
+const ListeningQuestionTest345: React.FC<ImageGalleryProps> = ({ name_part }) => {
   
   const [questions, setQuestions] = useState<QuestionData[]>([]);
   const [answers, setAnsers] = useState<AnswerData[]>([]);
@@ -59,8 +67,11 @@ const ListeningQuestionTest34: React.FC<ImageGalleryProps> = ({ name_part }) => 
     idx = 31
 
   }
-  else {
+  else if (lastCharacter === "4") {
     idx = 70
+  }
+  else {
+    idx = 100
   }
   useEffect(() => {
     getQuestions(name_part)
@@ -95,4 +106,4 @@ const ListeningQuestionTest34: React.FC<ImageGalleryProps> = ({ name_part }) => 
   );
 };
 
-export default ListeningQuestionTest34;
+export default ListeningQuestionTest345;

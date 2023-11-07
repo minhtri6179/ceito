@@ -27,7 +27,8 @@ class CreateTestDB:
                 part = "Part6"
             if idx == cur + 6 + 25 + 39 + 30 + 30 + 16:
                 part = "Part7"
-
+            if not question:
+                question = "Question"
             myobj = {
                 "question_text": question,
                 "test_name": test_name + "-" + part,

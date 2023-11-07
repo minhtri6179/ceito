@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import TabPanel from '@mui/lab/TabPanel';
 import ImageGallery from "../components/ImageGallery";
 import ListeningQuestion from "../components/ListeningQuestion2";
-import ListeningQuestionTest34 from "../components/ListeningQuestion3_4"
+import ListeningQuestionTest345 from "../components/ListeningQuestion3_4"
 import PublishIcon from '@mui/icons-material/Publish';
 import SubmitButton from "../components/Submit";
 export default function LabTabs() {
@@ -35,9 +35,9 @@ export default function LabTabs() {
         </Box>
         <TabPanel value="1"><ImageGallery /></TabPanel>
         <TabPanel value="2"><ListeningQuestion index={6} numofQuestion={25} /></TabPanel>
-        <TabPanel value="3"><ListeningQuestionTest34 name_part={"ETS-23-Test1-Part3"} /></TabPanel>
-        <TabPanel value="4"><ListeningQuestionTest34 name_part={"ETS-23-Test1-Part4"} /></TabPanel>
-        <TabPanel value="5"><ListeningQuestion index={5} numofQuestion={10} /></TabPanel>
+        <TabPanel value="3"><ListeningQuestionTest345 name_part={"ETS-23-Test1-Part3"} /></TabPanel>
+        <TabPanel value="4"><ListeningQuestionTest345 name_part={"ETS-23-Test1-Part4"} /></TabPanel>
+        <TabPanel value="5"><ListeningQuestionTest345  name_part={"ETS-23-Test1-Part5"} /></TabPanel>
         <TabPanel value="6"><ListeningQuestion index={5} numofQuestion={10} /></TabPanel>
         <TabPanel value="7"><ListeningQuestion index={5} numofQuestion={10} /></TabPanel>
         <Button

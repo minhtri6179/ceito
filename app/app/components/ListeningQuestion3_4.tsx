@@ -38,7 +38,7 @@ function getAnsers(name_part:string) {
     .then((data) => {
       const answers: AnswerData[] = [];
       //const slicedData = data.slice(from*4, to*4);
-      if (name_part === "ETS-23-Test1-Part5") {
+      if (name_part === "ETS-23-Test1-Part5" || name_part === "ETS-23-Test1-Part6" || name_part === "ETS-23-Test1-Part7" ) {
         for (let i = 0; i < data.length; i+=4) {
           answers.push({
             options: [`${data[i].answer_text}`, `${data[i+1].answer_text}`, `${data[i+2].answer_text}`, `${data[i+3].answer_text}`],
@@ -70,8 +70,14 @@ const ListeningQuestionTest345: React.FC<ImageGalleryProps> = ({ name_part }) =>
   else if (lastCharacter === "4") {
     idx = 70
   }
-  else {
+  else if (lastCharacter === "5") {
     idx = 100
+  }
+  else if (lastCharacter === "6") {
+    idx = 130
+  }
+  else {
+    idx = 146
   }
   useEffect(() => {
     getQuestions(name_part)

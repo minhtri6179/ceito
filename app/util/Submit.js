@@ -25,7 +25,7 @@ function submit() {
       }
     }
 
-    for (let i = 6; i < 130; i++) {
+    for (let i = 6; i < 200; i++) {
       const currentidx = "selectedAnswers-" + i;
       questions.push(i + 1);
       answers.push(dataObject[currentidx]);

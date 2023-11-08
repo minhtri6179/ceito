@@ -1,5 +1,4 @@
-DB_URL=postgres://root:YCdFlv6VUDoTr1rLotzWzAs7k5kxzzMr@dpg-cl57p9182rpc73fqeld0-a.singapore-postgres.render.com/toeic
-
+DB_URL=postgresql://root:secret@localhost:5432/toeic?sslmode=disable
 
 postgres:
 	docker run --name postgres12 -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:12-alpine

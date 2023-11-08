@@ -37,9 +37,9 @@ export default function LabTabs() {
         <TabPanel value="2"><ListeningQuestion index={6} numofQuestion={25} /></TabPanel>
         <TabPanel value="3"><ListeningQuestionTest345 name_part={"ETS-23-Test1-Part3"} /></TabPanel>
         <TabPanel value="4"><ListeningQuestionTest345 name_part={"ETS-23-Test1-Part4"} /></TabPanel>
-        <TabPanel value="5"><ListeningQuestionTest345  name_part={"ETS-23-Test1-Part5"} /></TabPanel>
-        <TabPanel value="6"><ListeningQuestion index={5} numofQuestion={10} /></TabPanel>
-        <TabPanel value="7"><ListeningQuestion index={5} numofQuestion={10} /></TabPanel>
+        <TabPanel value="5"><ListeningQuestionTest345 name_part={"ETS-23-Test1-Part5"} /></TabPanel>
+        <TabPanel value="6"><ListeningQuestionTest345 name_part={"ETS-23-Test1-Part6"} /></TabPanel>
+        <TabPanel value="7"><ListeningQuestionTest345 name_part={"ETS-23-Test1-Part7"} /></TabPanel>
         <Button
           component="label"
           variant="contained"

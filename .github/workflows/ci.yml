@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  push:
+    branches: [dev]
+
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+      - name: Decrypt secret
+        run: ./scripts/decrypt_secret.sh .env.test.gpg ./.env.test.local
+        env:
+          SECRET_PASSPHRASE: ${{ secrets.SECRET_PASSPHRASE }}
+      - run: npm i
+      - run: npm run lint
+      - run: npm run tsc
+      - run: npm run test

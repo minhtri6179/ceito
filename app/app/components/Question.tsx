@@ -67,7 +67,7 @@ const Question: React.FC<QuestionProps> = ({
         </Grid>
         <Grid item xs={6}>
         {imageSrc && (
-          <div style={{marginLeft: '20px', maxWidth: '250px', maxHeight: '250px' }}>
+          <div style={{marginLeft: '20px', maxWidth: '250px'}}>
             <Image
               src={imageSrc}
               alt={`Question ${index + 1} Image`}

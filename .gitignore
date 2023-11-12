@@ -2,3 +2,4 @@
 /app/.eslintrc.json
 /app/package-lock.json
 /service/scripts/crawling/.ipynb_checkpoints
+*.DS_Store

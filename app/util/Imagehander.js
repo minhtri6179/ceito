@@ -31,5 +31,13 @@ function getImage(test_part) {
     return []; // Return an empty array or handle the error accordingly
   }
 }
-
+function mappingidxtosize(ids_pairs, test_part) {
+  var res = [];
+  for (let i = 0; i < ids_pairs.length; i++) {
+    var x = ids_pairs[i].split("-");
+    var cur = Number(x[1]) - Number(x[0]) + 1;
+    res.push(cur);
+  }
+  return res;
+}
 export default getImage;

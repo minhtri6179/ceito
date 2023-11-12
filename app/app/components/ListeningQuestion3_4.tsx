@@ -1,7 +1,6 @@
 import React, { useState, useEffect, use } from "react";
 import QuestionsPart2 from "./Question";
 import getImage from "../../util/Imagehander";
-import { stringify } from "querystring";
 
 
 interface ImageGalleryProps {
@@ -16,23 +15,8 @@ interface QuestionData {
 interface AnswerData {
   options: string[];
 }
-function getQuestionsWithImage(test: string) {
-  let specialIds: string[] = [];
-
-  for (let i = 2; i <= 6; i++) {
-    let str = "../../public/test1/part" + i;
-    let res = getImage(str);
-    res.forEach((item) => {
-      specialIds.push(item.splitParts[0]);
-      specialIds.push(item.splitParts[1]);
-    });
-  }
-  return specialIds;
-  
-}
-function loadImageWithId(id: string) {
-  
-}
+const ids = [ '62', '65','68', '131', '135', '139', '143', '147', '149', '151', '154', '156', '158', '162', '166', '169', '172']
+const part7 = [2, 2, 3, 2, 2, 4, 4, 3, 3, 4, 5, 5, 5, 5, 5] 
 
 function getQuestions(name: string) {
   const url = `http://localhost:8080/questions/${name}`;
@@ -48,6 +32,39 @@ function getQuestions(name: string) {
       return questions;
     });
 }
+function mappingidxtofilename(idx: number, test_part: string) {
+  if (idx >= 146) {
+    return `/test1/part7/${idx}.png`
+  }
+  else if (idx >= 130) {
+    return `/test1/part6/${idx}.png`
+  }
+  else if (idx >= 70) {
+    return `/test1/part4/${idx}.png`
+  }
+  else if (idx >= 31) {
+    return `/test1/part3/${idx}.png`
+  }
+}
+function mappingidxtossize(idx: number) {
+  if (idx >= 146) {
+    var cur = 146
+    for (let i = 0; i < part7.length; i++) {
+      cur += part7[i]
+      if (cur >= idx) {
+        return part7[i]
+      }
+    }
+  }
+  else if (idx >= 130) {
+    return 4
+  }
+  else if (idx >= 31) {
+    return 3
+  }
+}
+
+
 function getAnsers(name_part:string) {
   const url = `http://localhost:8080/answers-part/${name_part}`;
   return fetch(url, {
@@ -75,12 +92,8 @@ function getAnsers(name_part:string) {
   }
     
 
-
-const ListeningQuestionTest345: React.FC<ImageGalleryProps> = ({ name_part }) => {
-  
+const ListeningQuestionTest345: React.FC<ImageGalleryProps> = ({ name_part }) => {  
   const [questions, setQuestions] = useState<QuestionData[]>([]);
-  const QuestionsWithImage = getQuestionsWithImage("test");
-
   const [answers, setAnsers] = useState<AnswerData[]>([]);
   const lastCharacter = name_part.slice(-1);
   let idx: number;
@@ -115,6 +128,7 @@ const ListeningQuestionTest345: React.FC<ImageGalleryProps> = ({ name_part }) =>
       .catch((error) => {
         console.error(error);
       });
+
   }, []);
   const specialQuestionIds = [1,2,3]
   const groupedQuestions = specialQuestionIds.map((specialQuestionId) =>
@@ -130,7 +144,8 @@ const ListeningQuestionTest345: React.FC<ImageGalleryProps> = ({ name_part }) =>
             question={questionData.question}
             options={answers[questionIndex]?.options || []}
             index={idx+questionIndex}
-            imageSrc=""
+            imageSrc={ids.includes(`${idx+questionIndex+1}`) ? `${mappingidxtofilename(idx+questionIndex+1, "hihi")}` : ""}
+            img_size={ids.includes(`${idx+questionIndex+1}`) ? `${mappingidxtossize(idx+questionIndex+1)}` : "1"}
           />
         ))
       }

@@ -1,6 +1,8 @@
 import React, { useState, useEffect, use } from "react";
 import QuestionsPart2 from "./Question";
-import { get } from "http";
+import getImage from "../../util/Imagehander";
+import { stringify } from "querystring";
+
 
 interface ImageGalleryProps {
   name_part: string;
@@ -13,6 +15,23 @@ interface QuestionData {
 }
 interface AnswerData {
   options: string[];
+}
+function getQuestionsWithImage(test: string) {
+  let specialIds: string[] = [];
+
+  for (let i = 2; i <= 6; i++) {
+    let str = "../../public/test1/part" + i;
+    let res = getImage(str);
+    res.forEach((item) => {
+      specialIds.push(item.splitParts[0]);
+      specialIds.push(item.splitParts[1]);
+    });
+  }
+  return specialIds;
+  
+}
+function loadImageWithId(id: string) {
+  
 }
 
 function getQuestions(name: string) {
@@ -60,6 +79,8 @@ function getAnsers(name_part:string) {
 const ListeningQuestionTest345: React.FC<ImageGalleryProps> = ({ name_part }) => {
   
   const [questions, setQuestions] = useState<QuestionData[]>([]);
+  const QuestionsWithImage = getQuestionsWithImage("test");
+
   const [answers, setAnsers] = useState<AnswerData[]>([]);
   const lastCharacter = name_part.slice(-1);
   let idx: number;
@@ -95,6 +116,10 @@ const ListeningQuestionTest345: React.FC<ImageGalleryProps> = ({ name_part }) =>
         console.error(error);
       });
   }, []);
+  const specialQuestionIds = [1,2,3]
+  const groupedQuestions = specialQuestionIds.map((specialQuestionId) =>
+  questions.filter((questionData, questionIndex) => questionIndex === specialQuestionId)
+  );
 
 
   return (
@@ -105,6 +130,7 @@ const ListeningQuestionTest345: React.FC<ImageGalleryProps> = ({ name_part }) =>
             question={questionData.question}
             options={answers[questionIndex]?.options || []}
             index={idx+questionIndex}
+            imageSrc=""
           />
         ))
       }

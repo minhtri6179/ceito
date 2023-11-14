@@ -1,7 +1,7 @@
 import React, { useState, useEffect, use } from "react";
 import QuestionsPart2 from "./Question";
 import getImage from "../../util/Imagehander";
-
+import getFirebase from "../../util/getFirebase";
 
 interface ImageGalleryProps {
   name_part: string;
@@ -144,7 +144,7 @@ const ListeningQuestionTest345: React.FC<ImageGalleryProps> = ({ name_part }) =>
             question={questionData.question}
             options={answers[questionIndex]?.options || []}
             index={idx+questionIndex}
-            imageSrc={ids.includes(`${idx+questionIndex+1}`) ? `${mappingidxtofilename(idx+questionIndex+1, "hihi")}` : ""}
+            imageSrc={ids.includes(`${idx+questionIndex+1}`) ? `${getFirebase(mappingidxtofilename(idx+questionIndex+1, "hihi"))}` : ""}
             img_size={ids.includes(`${idx+questionIndex+1}`) ? `${mappingidxtossize(idx+questionIndex+1)}` : "1"}
           />
         ))

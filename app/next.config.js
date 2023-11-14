@@ -6,6 +6,16 @@ module.exports = {
     // Looks like backward compatibility approach.
     webpack5: true,
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "firebasestorage.googleapis.com",
+        port: "",
+        pathname: "/**",
+      },
+    ],
+  },
 
   webpack(config) {
     config.resolve.fallback = {

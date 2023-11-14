@@ -1,7 +1,7 @@
 // pages/ImageGallery.js
 "use client";
 import React, { useState, useEffect } from "react";
-
+import getFirebase from "../../util/getFirebase";
 import {
   FormControl,
   FormControlLabel,
@@ -13,8 +13,7 @@ import {
 
 const ImageGallery = () => {
   // Replace 'path_to_images_folder' with the actual path where your images are located
-  const imagesFolder = "test1/part1";
-
+  const imagesFolder = "/test1/part1";
   // Get a list of all image files in the specified folder
   const imageFiles = [
     // Add your image filenames here or use a loop to fetch from the folder dynamically
@@ -70,7 +69,7 @@ const ImageGallery = () => {
 
           <img
             key={index}
-            src={`/${imagesFolder}/${imageFile}`}
+            src={getFirebase(`${imagesFolder}/${imageFile}`)}
             alt={`Image ${index + 1}`}
             style={{ margin: "5px", marginBottom: "20px" }}
             width={500}

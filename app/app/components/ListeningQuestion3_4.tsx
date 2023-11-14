@@ -19,7 +19,7 @@ const ids = [ '62', '65','68', '131', '135', '139', '143', '147', '149', '151', 
 const part7 = [2, 2, 3, 2, 2, 4, 4, 3, 3, 4, 3, 2, 3, 2, 3, 2, 2, 3, 2, 2, 2, 1, 1, 3, 1, 1] 
 
 function getQuestions(name: string) {
-  const url = `http://localhost:8080/questions/${name}`;
+  const url = `https://ceito.onrender.com/questions/${name}`;
   return fetch(url, {
     method: "GET",
   })
@@ -66,7 +66,7 @@ function mappingidxtossize(idx: number) {
 
 
 function getAnsers(name_part:string) {
-  const url = `http://localhost:8080/answers-part/${name_part}`;
+  const url = `https://ceito.onrender.com/answers-part/${name_part}`;
   return fetch(url, {
     method: "GET",
   })

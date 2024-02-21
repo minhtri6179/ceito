@@ -13,7 +13,7 @@ Lightweight web application for TOEIC testing.
 ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)
 
 
-![](https://github.com/minhtri6179/ceito/blob/main/listening.gif)
+![](https://github.com/minhtri6179/ceito/blob/production/demo.gif)
 
 ## How to Build
 

@@ -1,0 +1,4 @@
+run_tests:
+    script:
+        - echo this is test state
+

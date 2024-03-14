@@ -22,7 +22,7 @@ CEITO is a lightweight web application for TOEIC testing, focusing on learning G
 
 ## 3. How to Build in local
 
-- Start server: navigate to the service folder and follow steps inside.
+- Start server: navigate to the service folder and follow inside.
 - Start UI: go to the app folder and build and start it.
 
 Thank for reading

@@ -5,3 +5,4 @@
 *.DS_Store
 /service/scripts/.venv/
 /app/app/node_modules/
+package-lock.json

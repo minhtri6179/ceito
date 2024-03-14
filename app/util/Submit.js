@@ -47,7 +47,7 @@ function submit() {
       }
       answers_idx.push(curidx);
     }
-    fetch("https://ceito.onrender.com/submit", {
+    fetch("http://localhost:8080/submit", {
       method: "POST",
       headers: {
         Accept: "application/json",

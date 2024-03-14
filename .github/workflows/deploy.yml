@@ -20,6 +20,15 @@ jobs:
       - name: Checkout the repo 
         uses: actions/checkout@v2
 
+      - name: 'Create env file'
+        run: |
+          touch .env
+          echo DB_SOURCE=${{ secrets.DB_SOURCE }} >> .env
+          echo HTTP_SERVER_ADDRESS=${{ secrets.HTTP_SERVER_ADDRESS }} >> .env
+          echo TOKEN_SYMMETRIC_KEY=${{ secrets.TOKEN_SYMMETRIC_KEY }} >> .env
+          echo ACCESS_TOKEN_DURATION=${{ secrets.ACCESS_TOKEN_DURATION }} >> .env
+          cat .env
+
       - name: Build container image
         run: docker build -t $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) .
 

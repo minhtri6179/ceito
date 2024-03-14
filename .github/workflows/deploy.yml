@@ -6,8 +6,8 @@ on:
 
 # 2
 env:
-  REGISTRY: "registry.digitalocean.com/tulanh/service-api"
-  IMAGE_NAME: "cieto"
+  REGISTRY: "registry.digitalocean.com/tulanh"
+  IMAGE_NAME: "service-api"
 
 # 3
 jobs:

@@ -13,10 +13,13 @@ env:
 jobs:
   build_and_push:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./service
     steps:
       - name: Checkout the repo 
         uses: actions/checkout@v2
-        
+
       - name: Build container image
         run: docker build -t $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) .
 

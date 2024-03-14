@@ -1,8 +1,9 @@
-# Simple TOEIC tesing 
-Develop a lightweight web application for TOEIC testing, focusing on learning Go, implementing a CI/CD pipeline, and deploying the application from localhost to production.
+
+# CEITO -> TOEIC
+
+CEITO is a lightweight web application for TOEIC testing, focusing on learning Go, implementing a CI/CD pipeline, and deploying the application from localhost to production.
 
 ![DigitalOcean](https://img.shields.io/badge/DigitalOcean-%230167ff.svg?style=for-the-badge&logo=digitalOcean&logoColor=white)
-![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white)
 ![Go](https://img.shields.io/badge/go-%2300ADD8.svg?style=for-the-badge&logo=go&logoColor=white)
 ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
 ![Firebase](https://img.shields.io/badge/firebase-%23039BE5.svg?style=for-the-badge&logo=firebase)
@@ -12,7 +13,9 @@ Develop a lightweight web application for TOEIC testing, focusing on learning Go
 ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)
 
 ## 1. How to create a CI/CD workflow using Docker, GitHub Actions, and DigitalOcean to automate deployment to production
+
 ![](https://github.com/minhtri6179/ceito/blob/production/imgs/workflow.png)
+
 ## 2. Demo
 
 ![](https://github.com/minhtri6179/ceito/blob/production/imgs/demo.gif)

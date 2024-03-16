@@ -76,9 +76,7 @@ if __name__ == "__main__":
     answer_list = df["is_true"]
     answer_list
 
-    test = CreateTestDB(
-        "http://139.59.254.201:8080/questions/", "http://139.59.254.201:8080/answers/"
-    )
+    test = CreateTestDB("www.ceito.site/questions/", "www.ceito.site/answers/")
     test.create_question(question_text, "ETS-23-Test1")
     questions = test.get_questions()
 

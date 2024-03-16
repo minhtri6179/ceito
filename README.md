@@ -1,6 +1,7 @@
 
-# CEITO -> TOEIC
-
+<div align="center">
+  <h1>CEITO -> TOEIC</h1>
+</div>
 CEITO is a lightweight web application for TOEIC testing, focusing on learning Go, implementing a CI/CD pipeline, and deploying the application from localhost to production.
 
 ![DigitalOcean](https://img.shields.io/badge/DigitalOcean-%230167ff.svg?style=for-the-badge&logo=digitalOcean&logoColor=white)

@@ -16,6 +16,10 @@ module.exports = {
       },
     ],
   },
+  env: {
+    httpBackend: 'http://139.59.254.201:8080',
+  },
+
 
   webpack(config) {
     config.resolve.fallback = {

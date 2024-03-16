@@ -17,7 +17,7 @@ module.exports = {
     ],
   },
   env: {
-    httpBackend: "http://139.59.254.201:8080",
+    httpBackend: "ceito.site",
   },
 
   async headers() {

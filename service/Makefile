@@ -1,5 +1,6 @@
 DB_URL=postgresql://root:secret@localhost:5432/toeic?sslmode=disable
-# DB on cloud: DB_URL=postgres://root:YCdFlv6VUDoTr1rLotzWzAs7k5kxzzMr@dpg-cl57p9182rpc73fqeld0-a.singapore-postgres.render.com/toeic
+DB_on_cloud=secret
+
 postgres:
 	docker run --name postgres12 -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:12-alpine
 
@@ -12,6 +13,9 @@ dropdb:
 migrateup:
 	migrate -path db/migrations -database "${DB_URL}" -verbose up
 
+migrateupcloud:
+	migrate -path db/migrations -database "${DB_on_cloud}" -verbose up
+
 migratedown:
 	migrate -path db/migrations -database "${DB_URL}" -verbose down
 
@@ -21,4 +25,4 @@ sqlc:
 createdata:
 	cd scripts && python3 create_db.py
 
-.PHONY: postgres createdb dropdb migrateup migratedown sqlc createdata
+.PHONY: postgres createdb dropdb migrateup migrateupcloud migratedown sqlc createdata

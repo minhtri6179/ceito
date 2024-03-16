@@ -27,10 +27,11 @@ const ImageGallery = () => {
   ];
 
   const [selectedAnswers, setSelectedAnswers] = useState(() => {
-    if (typeof window !== 'undefined') {
-
-    const storedAnswers = localStorage.getItem("selectedAnswers");
-    return storedAnswers ? JSON.parse(storedAnswers) : Array(imageFiles.length).fill("");
+    if (typeof window !== "undefined") {
+      const storedAnswers = localStorage.getItem("selectedAnswers");
+      return storedAnswers
+        ? JSON.parse(storedAnswers)
+        : Array(imageFiles.length).fill("");
     }
   });
 
@@ -44,8 +45,6 @@ const ImageGallery = () => {
     localStorage.setItem("selectedAnswers", JSON.stringify(selectedAnswers));
   }, [selectedAnswers]);
 
-
-
   return (
     <div>
       {imageFiles.map((imageFile, index: number) => (
@@ -58,8 +57,7 @@ const ImageGallery = () => {
               aria-labelledby={`demo-radio-buttons-group-label-${index}`}
               name={`ansersheet-${index}`}
               value={selectedAnswers ? selectedAnswers[index] : ""}
-              onChange={(e) => handleAnswerChange(index, e.target.value)}
-            >
+              onChange={(e) => handleAnswerChange(index, e.target.value)}>
               <FormControlLabel value="A" control={<Radio />} label="A" />
               <FormControlLabel value="B" control={<Radio />} label="B" />
               <FormControlLabel value="C" control={<Radio />} label="C" />
@@ -77,7 +75,6 @@ const ImageGallery = () => {
           />
         </div>
       ))}
-
     </div>
   );
 };

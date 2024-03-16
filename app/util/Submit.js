@@ -47,7 +47,7 @@ function submit() {
       }
       answers_idx.push(curidx);
     }
-    fetch("${process.env.httpBackend}/submit", {
+    fetch(`${process.env.httpBackend}/submit`, {
       method: "POST",
       headers: {
         Accept: "application/json",

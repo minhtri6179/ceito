@@ -6,3 +6,10 @@
 /service/scripts/.venv/
 /app/app/node_modules/
 package-lock.json
+app.env
+*.csv
+
+go.sum
+go.mod
+/GUI
+*.DS_Store

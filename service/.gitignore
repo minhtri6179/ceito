@@ -1,7 +1,0 @@
-app.env
-*.csv
-
-go.sum
-go.mod
-
-*.DS_Store

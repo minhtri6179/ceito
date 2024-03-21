@@ -1,0 +1,26 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:12-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=toeic
+    ports:
+      - "5432:5432"
+    volumes:
+      - data-volume:/var/lib/postgresql/data
+
+  api:
+    image: registry.digitalocean.com/tulanh/service-api:latest
+    ports:
+      - 8080:8080
+    environment:
+      - DB_SOURCE=postgresql://root:secret@postgres:5432/toeic?sslmode=disable
+    entrypoint: ["/app/wait-for.sh", "postgres:5432", "--", "/app/start.sh"]
+    depends_on:
+      - postgres
+    command: ["/app/main"]
+volumes:
+  data-volume:

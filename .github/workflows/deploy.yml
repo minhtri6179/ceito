@@ -73,4 +73,5 @@ jobs:
             --restart always \
             -p 8080:8080 \
             --name $(echo $IMAGE_NAME) \
+            --network ceito \
             $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)

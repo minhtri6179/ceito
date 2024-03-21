@@ -2,13 +2,13 @@ DB_URL=postgresql://root:secret@localhost:5432/toeic?sslmode=disable
 DB_on_cloud=secret
 
 postgres:
-	docker run --name postgres12 -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:12-alpine
+	docker run --name dbceito --network ceito -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:12-alpine
 
 createdb:
-	docker exec -it postgres12 createdb --username=root --owner=root toeic
+	docker exec -it dbceito createdb --username=root --owner=root toeic
 
 dropdb:
-	docker exec -it postgres12 dropdb toeic
+	docker exec -it dbceito dropdb toeic
 
 migrateup:
 	migrate -path db/migrations -database "${DB_URL}" -verbose up

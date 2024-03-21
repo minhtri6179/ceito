@@ -1,6 +1,6 @@
 DB_URL=postgresql://root:secret@localhost:5432/toeic?sslmode=disable
 DB_on_cloud=secret
-
+# db url change localhost to name of db container
 postgres:
 	docker run --name dbceito --network ceito -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:12-alpine
 

@@ -49,6 +49,7 @@ class CreateTestDB:
                 "answer_text": answer,
                 "is_correct": is_correct_list[idx],
             }
+            print("POST: ", myobj, "to: ", self.answer)
             x = requests.post(self.answer, json=myobj)
             answer_ids.append(x.json()["answer_id"])
         self.answers_idx = answer_ids
@@ -76,7 +77,9 @@ if __name__ == "__main__":
     answer_list = df["is_true"]
     answer_list
 
-    test = CreateTestDB("www.ceito.site/questions/", "www.ceito.site/answers/")
+    test = CreateTestDB(
+        " https://www.ceito.site/questions/", " https://www.ceito.site/answers/"
+    )
     test.create_question(question_text, "ETS-23-Test1")
     questions = test.get_questions()
 

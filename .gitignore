@@ -8,7 +8,7 @@
 package-lock.json
 app.env
 *.csv
-
+/scripts/.venv/
 go.sum
 go.mod
 /GUI

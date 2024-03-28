@@ -1,4 +1,4 @@
-DB_URL=postgresql://root:secret@localhost:5432/toeic?sslmode=disable
+DB_URL=secret
 DB_on_cloud=secret
 # db url change localhost to name of db container
 postgres:

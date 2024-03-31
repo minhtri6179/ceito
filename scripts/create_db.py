@@ -78,7 +78,7 @@ if __name__ == "__main__":
     answer_list
 
     test = CreateTestDB(
-        " https://www.ceito.site/questions/", " https://www.ceito.site/answers/"
+        "http://localhost:8080/questions/", "http://localhost:8080/answers/"
     )
     test.create_question(question_text, "ETS-23-Test1")
     questions = test.get_questions()

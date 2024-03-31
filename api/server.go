@@ -10,6 +10,8 @@ import (
 	db "github.com/minhtri6179/service/db/sqlc"
 	"github.com/minhtri6179/service/token"
 	"github.com/minhtri6179/service/util"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 // Server serves HTTP requests for our banking service.
@@ -47,6 +49,8 @@ func (server *Server) setupRouter() {
 	}))
 
 	router.Use(cors.Default())
+
+	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	router.POST("/users", server.createUser)
 	router.POST("/users/login", server.loginUser)

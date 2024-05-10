@@ -3,10 +3,13 @@ package api
 import (
 	"errors"
 	"fmt"
+
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/minhtri6179/service/pkg/log"
 	"github.com/minhtri6179/service/token"
 )
 
@@ -50,5 +53,32 @@ func authMiddleware(tokenMaker token.Maker) gin.HandlerFunc {
 
 		ctx.Set(authorizationPayloadKey, payload)
 		ctx.Next()
+	}
+}
+
+func LoggerMiddleware(log *log.Logger) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		start := time.Now()
+		path := ctx.Request.URL.Path
+		raw := ctx.Request.URL.RawQuery
+		ctx.Next()
+		end := time.Now()
+		latency := end.Sub(start)
+		clientIP := ctx.ClientIP()
+		method := ctx.Request.Method
+		statusCode := ctx.Writer.Status()
+		errorMessage := ctx.Errors.ByType(gin.ErrorTypePrivate).String()
+		if raw != "" {
+			path = path + "?" + raw
+		}
+		log.Infof("[GIN] %v | %3d | %13v | %15s | %-7s %s\n%s",
+			end.Format("2006/01/02 - 15:04:05"),
+			statusCode,
+			latency,
+			clientIP,
+			method,
+			path,
+			errorMessage,
+		)
 	}
 }

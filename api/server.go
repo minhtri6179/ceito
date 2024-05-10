@@ -36,6 +36,7 @@ func NewServer(config util.Config, store db.Store) (*Server, error) {
 	}
 
 	server.setupRouter()
+
 	return server, nil
 }
 

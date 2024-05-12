@@ -2,6 +2,7 @@ package api
 
 import (
 	"fmt"
+	"net/http"
 	"time"
 
 	"github.com/gin-contrib/cors"
@@ -52,6 +53,11 @@ func (server *Server) setupRouter() {
 	router.Use(cors.Default())
 
 	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	// Ping pong tutorial prometheus
+	http.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Print(w, "pong")
+	})
 
 	router.POST("/users", server.createUser)
 	router.POST("/users/login", server.loginUser)

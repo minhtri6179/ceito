@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/gin-contrib/cors"
+	ginprometheus "github.com/zsais/go-gin-prometheus"
 
 	"github.com/gin-gonic/gin"
 	db "github.com/minhtri6179/service/db/sqlc"
@@ -51,6 +52,9 @@ func (server *Server) setupRouter() {
 	}))
 
 	router.Use(cors.Default())
+	p := ginprometheus.NewPrometheus("gin")
+
+	p.Use(router)
 
 	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
